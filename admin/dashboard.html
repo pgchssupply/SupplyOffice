@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Admin Dashboard - PGCHS Supply Office</title>
@@ -9,6 +12,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
+
     * {
       box-sizing: border-box;
     }
@@ -37,12 +41,12 @@
 
     header h1 {
       margin: 0;
-      font-size: 36px;
+      font-size: 32px;
     }
 
     header p {
       margin: 8px 0 0;
-      font-size: 15px;
+      font-size: 14px;
     }
 
     nav {
@@ -62,20 +66,7 @@
     }
 
     .content {
-      display: flex;
-      min-height: 600px;
-    }
-
-    main {
-      flex: 1;
       padding: 30px;
-    }
-
-    aside {
-      width: 230px;
-      background: #f3f3f3;
-      border-left: 1px solid #ddd;
-      padding: 20px;
     }
 
     h2 {
@@ -88,40 +79,124 @@
     }
 
     .toolbar {
-      background: #eef7ff;
-      border: 1px solid #c5def2;
-      padding: 15px;
       margin-bottom: 20px;
     }
 
-    .toolbar button,
     .button {
+      display: inline-block;
+      border: 0;
       background: #2878b9;
       color: white;
-      border: 0;
       text-decoration: none;
-      padding: 10px 16px;
+      padding: 10px 18px;
+      border-radius: 3px;
       cursor: pointer;
       font-size: 14px;
-      margin-right: 5px;
     }
 
-    .toolbar button:hover,
     .button:hover {
       background: #14548a;
     }
 
-    .logout {
-      background: #777 !important;
+    .button-danger {
+      background: #9b2226;
     }
 
-    .logout:hover {
-      background: #555 !important;
+    .button-danger:hover {
+      background: #74171a;
+    }
+
+    .button-secondary {
+      background: #777;
+    }
+
+    .button-secondary:hover {
+      background: #555;
+    }
+
+    .form-box {
+      display: none;
+      background: #eef7ff;
+      border: 1px solid #c5def2;
+      padding: 25px;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: bold;
+      color: #14548a;
+      margin-bottom: 7px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #aaa;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    input:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: #2878b9;
+    }
+
+    .pr-input {
+      display: flex;
+      width: 100%;
+    }
+
+    .pr-prefix {
+      background: #14548a;
+      color: white;
+      padding: 11px 14px;
+      font-weight: bold;
+      border: 1px solid #14548a;
+    }
+
+    .pr-input input {
+      border-left: 0;
+    }
+
+    .form-buttons {
+      margin-top: 20px;
+    }
+
+    .message {
+      display: none;
+      padding: 12px;
+      margin-bottom: 20px;
+      border: 1px solid;
+    }
+
+    .success {
+      background: #eef9ee;
+      border-color: #a8d5a8;
+      color: #286428;
+    }
+
+    .error {
+      background: #fff1f1;
+      border-color: #e0aaaa;
+      color: #9b2226;
     }
 
     .table-container {
       overflow-x: auto;
-      border: 1px solid #ccc;
     }
 
     table {
@@ -134,128 +209,49 @@
       background: #14548a;
       color: white;
       text-align: left;
-      padding: 10px;
+      padding: 12px;
       font-size: 13px;
     }
 
     td {
       border-bottom: 1px solid #ddd;
-      padding: 10px;
+      padding: 12px;
       font-size: 13px;
+      vertical-align: top;
     }
 
     tr:hover {
-      background: #f2f8fc;
+      background: #f5f9fc;
     }
 
     .status {
       display: inline-block;
-      padding: 5px 8px;
+      padding: 6px 9px;
       background: #eef7ff;
       border: 1px solid #c5def2;
       color: #14548a;
+      font-weight: bold;
       font-size: 12px;
     }
 
-    .view-button {
-      background: #2878b9;
-      color: white;
-      border: 0;
-      padding: 7px 10px;
-      cursor: pointer;
-      font-size: 12px;
-    }
-
-    .view-button:hover {
-      background: #14548a;
-    }
-
-    .form-box {
+    .update-box {
       display: none;
       background: #f7f7f7;
       border: 1px solid #ccc;
-      padding: 20px;
-      margin-bottom: 25px;
+      padding: 25px;
+      margin-top: 25px;
     }
 
-    .form-row {
-      margin-bottom: 15px;
-    }
-
-    label {
-      display: block;
-      font-weight: bold;
+    .pr-number {
       color: #14548a;
-      margin-bottom: 5px;
-    }
-
-    input,
-    textarea,
-    select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #aaa;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 14px;
-    }
-
-    textarea {
-      min-height: 80px;
-      resize: vertical;
-    }
-
-    .message {
-      display: none;
-      background: white;
-      border: 1px solid #ccc;
-      padding: 10px;
-      margin-bottom: 15px;
-    }
-
-    .history {
-      margin-top: 20px;
-      border-top: 1px solid #ddd;
-      padding-top: 15px;
-    }
-
-    .history-item {
-      border-left: 4px solid #2878b9;
-      background: white;
-      border: 1px solid #ddd;
-      padding: 12px;
-      margin-bottom: 10px;
-    }
-
-    .history-status {
       font-weight: bold;
-      color: #14548a;
+      font-size: 16px;
     }
 
-    .history-date {
+    .loading {
+      text-align: center;
+      padding: 25px;
       color: #777;
-      font-size: 12px;
-      margin-top: 5px;
-    }
-
-    .side-box {
-      background: white;
-      border: 1px solid #ccc;
-      padding: 15px;
-      margin-bottom: 15px;
-    }
-
-    .side-box h3 {
-      margin-top: 0;
-      font-size: 17px;
-    }
-
-    .side-box a {
-      color: #14548a;
-      text-decoration: none;
-    }
-
-    .side-box a:hover {
-      text-decoration: underline;
     }
 
     footer {
@@ -266,22 +262,15 @@
       font-size: 12px;
     }
 
-    .loading {
-      text-align: center;
-      padding: 25px;
-      color: #777;
-    }
-
     @media (max-width: 700px) {
 
-      .content {
-        display: block;
+      .page {
+        max-width: 100%;
+        margin: 0;
       }
 
-      aside {
-        width: auto;
-        border-left: 0;
-        border-top: 1px solid #ddd;
+      .content {
+        padding: 20px;
       }
 
       nav a {
@@ -289,726 +278,615 @@
       }
 
     }
+
   </style>
+
 </head>
+
 
 <body>
 
+
 <div class="page">
 
+
   <header>
-    <h1>Supply Office</h1>
-    <p>PGCHS Supply Office Administration</p>
+
+    <h1>
+      PGCHS Supply Office
+    </h1>
+
+    <p>
+      Administration - Procurement Tracking
+    </p>
+
   </header>
 
 
   <nav>
-    <a href="../index.html">Home</a>
-    <a href="../services.html">Services</a>
-    <a href="../procurement.html">Procurement</a>
-    <a href="../contact.html">Contact</a>
+
+    <a href="../index.html">
+      Home
+    </a>
+
+    <a href="../services.html">
+      Services
+    </a>
+
+    <a href="../procurement.html">
+      Procurement
+    </a>
+
+    <a href="../contact.html">
+      Contact
+    </a>
+
   </nav>
 
 
   <div class="content">
 
-    <main>
 
-      <h2>Procurement Dashboard</h2>
+    <div class="toolbar">
+
+      <button
+        class="button"
+        onclick="showNewRequest()">
+
+        + New Procurement Request
+
+      </button>
+
+
+      <button
+        class="button button-danger"
+        onclick="logout()">
+
+        Logout
+
+      </button>
+
+    </div>
+
+
+    <div
+      id="message"
+      class="message">
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- NEW PROCUREMENT REQUEST -->
+    <!-- ================================= -->
+
+    <div
+      id="newRequestBox"
+      class="form-box">
+
+      <h2>
+        New Procurement Request
+      </h2>
+
+
+      <div class="form-group">
+
+        <label>
+          Purchase Request Number
+        </label>
+
+
+        <div class="pr-input">
+
+          <span class="pr-prefix">
+            PR
+          </span>
+
+
+          <input
+            type="text"
+            id="purchaseRequestNumber"
+            placeholder="2025-01-001A"
+            autocomplete="off">
+
+        </div>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Requester Name
+        </label>
+
+
+        <input
+          type="text"
+          id="requesterName"
+          placeholder="Enter requester name">
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Item / Procurement Description
+        </label>
+
+
+        <textarea
+          id="itemDescription"
+          placeholder="Enter the item or procurement description"></textarea>
+
+      </div>
+
+
+      <div class="form-group">
+
+        <label>
+          Estimated Cost
+        </label>
+
+
+        <input
+          type="number"
+          id="estimatedCost"
+          placeholder="Enter estimated cost"
+          min="0"
+          step="0.01">
+
+      </div>
+
+
+      <div class="form-buttons">
+
+        <button
+          class="button"
+          onclick="createProcurement()">
+
+          Create Request
+
+        </button>
+
+
+        <button
+          class="button button-secondary"
+          onclick="hideNewRequest()">
+
+          Cancel
+
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- PROCUREMENT REQUESTS -->
+    <!-- ================================= -->
+
+    <h2>
+      Procurement Requests
+    </h2>
+
+
+    <div
+      class="table-container">
+
+      <table>
+
+        <thead>
+
+          <tr>
+
+            <th>
+              Purchase Request
+            </th>
+
+            <th>
+              Requester
+            </th>
+
+            <th>
+              Description
+            </th>
+
+            <th>
+              Status
+            </th>
+
+            <th>
+              Updated
+            </th>
+
+            <th>
+              Action
+            </th>
+
+          </tr>
+
+        </thead>
+
+
+        <tbody id="requestsTable">
+
+          <tr>
+
+            <td
+              colspan="6"
+              class="loading">
+
+              Loading procurement requests...
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+
+    <!-- ================================= -->
+    <!-- UPDATE STATUS -->
+    <!-- ================================= -->
+
+    <div
+      id="updateBox"
+      class="update-box">
+
+      <h2>
+        Update Procurement
+      </h2>
+
 
       <p>
-        Welcome, Administrator.
-        Manage procurement requests and update their progress below.
+
+        Purchase Request:
+
+        <span
+          id="updatePR"
+          class="pr-number">
+        </span>
+
       </p>
 
 
-      <div class="toolbar">
+      <div class="form-group">
 
-        <button
-          onclick="showNewRequest()">
-          + New Procurement Request
-        </button>
-
-        <button
-          class="logout"
-          onclick="logout()">
-          Logout
-        </button>
-
-      </div>
+        <label>
+          Current Status
+        </label>
 
 
-      <div
-        id="message"
-        class="message">
-      </div>
+        <select
+          id="newStatus">
 
+          <option>
+            Submitted the Request
+          </option>
 
-      <!-- NEW PROCUREMENT FORM -->
+          <option>
+            For BAC Deliberation
+          </option>
 
-      <div
-        id="newRequestBox"
-        class="form-box">
+          <option>
+            For Canvassing
+          </option>
 
-        <h3>New Procurement Request</h3>
+          <option>
+            For Bidding
+          </option>
 
-        <form id="newRequestForm">
+          <option>
+            Preparing Procurement Documents
+          </option>
 
-          <div class="form-row">
+          <option>
+            Waiting for Delivery from Supplier
+          </option>
 
-            <label>
-              Requester Name
-            </label>
+          <option>
+            For Issuance
+          </option>
 
-            <input
-              type="text"
-              id="requesterName"
-              required>
+          <option>
+            Completed
+          </option>
 
-          </div>
-
-
-          <div class="form-row">
-
-            <label>
-              Requester Email
-            </label>
-
-            <input
-              type="email"
-              id="requesterEmail">
-
-          </div>
-
-
-          <div class="form-row">
-
-            <label>
-              Contact Number
-            </label>
-
-            <input
-              type="text"
-              id="requesterContact">
-
-          </div>
-
-
-          <div class="form-row">
-
-            <label>
-              Item / Procurement Description
-            </label>
-
-            <textarea
-              id="itemDescription"
-              required></textarea>
-
-          </div>
-
-
-          <div class="form-row">
-
-            <label>
-              Quantity
-            </label>
-
-            <input
-              type="text"
-              id="quantity">
-
-          </div>
-
-
-          <div class="form-row">
-
-            <label>
-              Estimated Cost
-            </label>
-
-            <input
-              type="number"
-              step="0.01"
-              id="estimatedCost">
-
-          </div>
-
-
-          <button
-            type="submit"
-            class="button">
-
-            Create Request
-
-          </button>
-
-
-          <button
-            type="button"
-            class="button logout"
-            onclick="hideNewRequest()">
-
-            Cancel
-
-          </button>
-
-        </form>
+        </select>
 
       </div>
 
 
-      <!-- REQUEST DETAILS -->
+      <div class="form-group">
 
-      <div
-        id="detailsBox"
-        class="form-box">
-
-        <h3>Procurement Details</h3>
-
-        <div id="detailsContent"></div>
-
-      </div>
+        <label>
+          Remarks
+        </label>
 
 
-      <!-- REQUEST LIST -->
-
-      <h3>Procurement Requests</h3>
-
-      <div class="table-container">
-
-        <table>
-
-          <thead>
-
-            <tr>
-
-              <th>Tracking Code</th>
-
-              <th>Requester</th>
-
-              <th>Description</th>
-
-              <th>Status</th>
-
-              <th>Updated</th>
-
-              <th>Action</th>
-
-            </tr>
-
-          </thead>
-
-          <tbody id="requestTable">
-
-            <tr>
-
-              <td
-                colspan="6"
-                class="loading">
-
-                Loading procurement requests...
-
-              </td>
-
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </main>
-
-
-    <aside>
-
-      <div class="side-box">
-
-        <h3>Quick Links</h3>
-
-        <p>
-          <a href="../index.html">
-            Home
-          </a>
-        </p>
-
-        <p>
-          <a href="../services.html">
-            Services
-          </a>
-        </p>
-
-        <p>
-          <a href="../procurement.html">
-            Procurement
-          </a>
-        </p>
-
-        <p>
-          <a href="../contact.html">
-            Contact
-          </a>
-        </p>
+        <textarea
+          id="statusRemarks"
+          placeholder="Optional remarks"></textarea>
 
       </div>
 
 
-      <div class="side-box">
+      <button
+        class="button"
+        onclick="updateStatus()">
 
-        <h3>Administration</h3>
+        Update Status
 
-        <p>
-          Authorized Supply Office personnel only.
-        </p>
+      </button>
 
-      </div>
 
-    </aside>
+      <button
+        class="button button-secondary"
+        onclick="hideUpdateBox()">
+
+        Cancel
+
+      </button>
+
+    </div>
+
 
   </div>
 
 
   <footer>
+
     © 2026 PGCHS Supply. All rights reserved.
+
   </footer>
+
 
 </div>
 
 
 <script>
 
-  // ==========================================
-  // SUPABASE CONFIGURATION
-  // ==========================================
 
-  const SUPABASE_URL =
-    "https://eqjmydhrmhdblzamoenj.supabase.co";
+// ============================================
+// SUPABASE
+// ============================================
 
-  const SUPABASE_PUBLISHABLE_KEY =
-    "sb_publishable_dCPcVA8DeORxtoXC1g1ARA_leR4oYSA";
+const SUPABASE_URL =
+  "https://eqjmydhrmhdblzamoenj.supabase.co";
 
 
-  const { createClient } = supabase;
+// IMPORTANT:
+// Put your Supabase PUBLISHABLE KEY here.
+// Do NOT put the secret/service-role key here.
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
 
 
-  const db = createClient(
+const {
+  createClient
+} = supabase;
+
+
+const db =
+  createClient(
     SUPABASE_URL,
     SUPABASE_PUBLISHABLE_KEY
   );
 
 
-  // ==========================================
-  // STATUS LIST
-  // ==========================================
+// ============================================
+// GLOBAL
+// ============================================
 
-  const STATUS_LIST = [
-
-    "Submitted the Request",
-
-    "For BAC Deliberation",
-
-    "For Canvassing",
-
-    "For Bidding",
-
-    "Preparing Procurement Documents",
-
-    "Waiting for Delivery from Supplier",
-
-    "For Issuance",
-
-    "Completed"
-
-  ];
+let selectedProcurementId = null;
 
 
-  // ==========================================
-  // CHECK LOGIN
-  // ==========================================
+// ============================================
+// CHECK LOGIN
+// ============================================
 
-  async function checkLogin() {
+async function checkLogin() {
 
-    const { data, error } =
-      await db.auth.getSession();
-
-
-    if (error || !data.session) {
-
-      window.location.href =
-        "login.html";
-
-      return false;
-
+  const {
+    data: {
+      session
     }
+  } =
+    await db.auth.getSession();
 
 
-    return true;
-
-  }
-
-
-  // ==========================================
-  // LOGOUT
-  // ==========================================
-
-  async function logout() {
-
-    await db.auth.signOut();
+  if (!session) {
 
     window.location.href =
       "login.html";
 
-  }
-
-
-  // ==========================================
-  // MESSAGE
-  // ==========================================
-
-  function showMessage(text) {
-
-    const message =
-      document.getElementById("message");
-
-    message.textContent = text;
-
-    message.style.display = "block";
+    return false;
 
   }
 
 
-  // ==========================================
-  // NEW REQUEST FORM
-  // ==========================================
+  return true;
 
-  function showNewRequest() {
+}
 
+
+// ============================================
+// LOAD REQUESTS
+// ============================================
+
+async function loadRequests() {
+
+
+  const table =
     document.getElementById(
-      "newRequestBox"
-    ).style.display = "block";
+      "requestsTable"
+    );
 
-    document.getElementById(
-      "detailsBox"
-    ).style.display = "none";
 
-    window.scrollTo({
-      top: 300,
-      behavior: "smooth"
-    });
+  table.innerHTML = `
 
-  }
+    <tr>
 
+      <td
+        colspan="6"
+        class="loading">
 
-  function hideNewRequest() {
+        Loading procurement requests...
 
-    document.getElementById(
-      "newRequestBox"
-    ).style.display = "none";
+      </td>
 
-  }
+    </tr>
 
+  `;
 
-  // ==========================================
-  // GENERATE TRACKING CODE
-  // ==========================================
 
-  function generateTrackingCode() {
+  const {
+    data,
+    error
+  } =
+    await db
 
-    const year =
-      new Date().getFullYear();
+      .from(
+        "procurement_requests"
+      )
 
-    const randomNumber =
-      Math.floor(
-        10000 +
-        Math.random() * 90000
-      );
+      .select(
+        "id,purchase_request_number,requester_name,item_description,current_status,updated_at"
+      )
 
-    return "PGCHS-" +
-      year +
-      "-" +
-      randomNumber;
-
-  }
-
-
-  // ==========================================
-  // CREATE PROCUREMENT REQUEST
-  // ==========================================
-
-  document.getElementById(
-    "newRequestForm"
-  ).addEventListener(
-    "submit",
-    async function(event) {
-
-      event.preventDefault();
-
-
-      const requesterName =
-        document.getElementById(
-          "requesterName"
-        ).value.trim();
-
-
-      const requesterEmail =
-        document.getElementById(
-          "requesterEmail"
-        ).value.trim();
-
-
-      const requesterContact =
-        document.getElementById(
-          "requesterContact"
-        ).value.trim();
-
-
-      const itemDescription =
-        document.getElementById(
-          "itemDescription"
-        ).value.trim();
-
-
-      const quantity =
-        document.getElementById(
-          "quantity"
-        ).value.trim();
-
-
-      const estimatedCost =
-        document.getElementById(
-          "estimatedCost"
-        ).value;
-
-
-      const trackingCode =
-        generateTrackingCode();
-
-
-      const {
-        data: userData
-      } =
-        await db.auth.getUser();
-
-
-      if (!userData.user) {
-
-        window.location.href =
-          "login.html";
-
-        return;
-
-      }
-
-
-      const {
-        data,
-        error
-      } =
-        await db
-          .from("procurement_requests")
-          .insert({
-
-            tracking_code:
-              trackingCode,
-
-            requester_name:
-              requesterName,
-
-            requester_email:
-              requesterEmail,
-
-            requester_contact:
-              requesterContact,
-
-            item_description:
-              itemDescription,
-
-            quantity:
-              quantity,
-
-            estimated_cost:
-              estimatedCost
-              ?
-              parseFloat(estimatedCost)
-              :
-              null,
-
-            current_status:
-              "Submitted the Request"
-
-          })
-          .select()
-          .single();
-
-
-      if (error) {
-
-        showMessage(
-          "Error creating request: " +
-          error.message
-        );
-
-        return;
-
-      }
-
-
-      // Create initial history
-
-      await db
-        .from("procurement_status_history")
-        .insert({
-
-          procurement_id:
-            data.id,
-
-          status:
-            "Submitted the Request",
-
-          remarks:
-            "Procurement request created."
-
-        });
-
-
-      showMessage(
-        "Procurement request created successfully. " +
-        "Tracking Code: " +
-        trackingCode
+      .order(
+        "updated_at",
+        {
+          ascending: false
+        }
       );
 
 
-      document.getElementById(
-        "newRequestForm"
-      ).reset();
+  if (error) {
+
+    showMessage(
+      error.message,
+      "error"
+    );
+
+    return;
+
+  }
 
 
-      hideNewRequest();
+  if (!data || data.length === 0) {
 
+    table.innerHTML = `
 
-      loadRequests();
+      <tr>
 
-    }
-  );
+        <td
+          colspan="6"
+          class="loading">
 
+          No procurement requests found.
 
-  // ==========================================
-  // LOAD REQUESTS
-  // ==========================================
-
-  async function loadRequests() {
-
-    const table =
-      document.getElementById(
-        "requestTable"
-      );
-
-
-    table.innerHTML =
-      `<tr>
-        <td colspan="6" class="loading">
-          Loading procurement requests...
         </td>
-      </tr>`;
+
+      </tr>
+
+    `;
+
+    return;
+
+  }
 
 
-    const {
-      data,
-      error
-    } =
-      await db
-        .from("procurement_requests")
-        .select("*")
-        .order(
-          "created_at",
-          {
-            ascending: false
-          }
-        );
+  table.innerHTML = "";
 
 
-    if (error) {
+  data.forEach(
+    function(request) {
 
-      table.innerHTML =
-        `<tr>
-          <td colspan="6">
-            Error loading requests:
-            ${escapeHtml(error.message)}
-          </td>
-        </tr>`;
-
-      return;
-
-    }
-
-
-    if (!data || data.length === 0) {
-
-      table.innerHTML =
-        `<tr>
-          <td colspan="6" class="loading">
-            No procurement requests found.
-          </td>
-        </tr>`;
-
-      return;
-
-    }
-
-
-    table.innerHTML = "";
-
-
-    data.forEach(function(request) {
 
       const row =
-        document.createElement("tr");
+        document.createElement(
+          "tr"
+        );
 
 
       row.innerHTML = `
 
         <td>
-          <strong>
+
+          <span class="pr-number">
+
             ${escapeHtml(
-              request.tracking_code
+              request.purchase_request_number
             )}
-          </strong>
+
+          </span>
+
         </td>
 
+
         <td>
+
           ${escapeHtml(
             request.requester_name
           )}
+
         </td>
 
+
         <td>
+
           ${escapeHtml(
             request.item_description
           )}
+
         </td>
 
+
         <td>
+
           <span class="status">
+
             ${escapeHtml(
               request.current_status
             )}
+
           </span>
+
         </td>
 
+
         <td>
+
           ${formatDate(
             request.updated_at
           )}
+
         </td>
+
 
         <td>
 
           <button
-            class="view-button"
-            onclick="viewRequest('${request.id}')">
+            class="button"
+            onclick="openUpdateBox(
+              '${request.id}',
+              '${escapeAttribute(
+                request.purchase_request_number
+              )}',
+              '${escapeAttribute(
+                request.current_status
+              )}'
+            )">
 
-            View
+            Update
 
           </button>
 
@@ -1017,369 +895,559 @@
       `;
 
 
-      table.appendChild(row);
+      table.appendChild(
+        row
+      );
 
-    });
+    }
+  );
+
+}
+
+
+// ============================================
+// SHOW NEW REQUEST
+// ============================================
+
+function showNewRequest() {
+
+  document.getElementById(
+    "newRequestBox"
+  ).style.display =
+    "block";
+
+}
+
+
+// ============================================
+// HIDE NEW REQUEST
+// ============================================
+
+function hideNewRequest() {
+
+  document.getElementById(
+    "newRequestBox"
+  ).style.display =
+    "none";
+
+}
+
+
+// ============================================
+// CREATE PROCUREMENT
+// ============================================
+
+async function createProcurement() {
+
+
+  let pr =
+    document.getElementById(
+      "purchaseRequestNumber"
+    ).value.trim();
+
+
+  const requester =
+    document.getElementById(
+      "requesterName"
+    ).value.trim();
+
+
+  const description =
+    document.getElementById(
+      "itemDescription"
+    ).value.trim();
+
+
+  const estimatedCost =
+    document.getElementById(
+      "estimatedCost"
+    ).value;
+
+
+  if (!pr) {
+
+    showMessage(
+      "Please enter the Purchase Request Number.",
+      "error"
+    );
+
+    return;
 
   }
 
 
-  // ==========================================
-  // VIEW REQUEST
-  // ==========================================
+  // Remove PR if administrator accidentally enters it.
 
-  async function viewRequest(id) {
+  if (
+    pr.toUpperCase()
+      .startsWith("PR")
+  ) {
 
-    const {
-      data: request,
-      error
-    } =
-      await db
-        .from("procurement_requests")
-        .select("*")
-        .eq("id", id)
-        .single();
+    pr =
+      pr.substring(2).trim();
+
+  }
 
 
-    if (error) {
+  const finalPR =
+    "PR" + pr;
 
-      showMessage(
-        "Error loading request: " +
-        error.message
-      );
 
-      return;
+  if (!requester) {
 
+    showMessage(
+      "Please enter the requester name.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  if (!description) {
+
+    showMessage(
+      "Please enter the procurement description.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data: existing
+  } =
+    await db
+
+      .from(
+        "procurement_requests"
+      )
+
+      .select(
+        "id"
+      )
+
+      .eq(
+        "purchase_request_number",
+        finalPR
+      )
+
+      .maybeSingle();
+
+
+  if (existing) {
+
+    showMessage(
+      "This Purchase Request Number already exists.",
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  const {
+    data: {
+      user
     }
+  } =
+    await db.auth.getUser();
 
 
-    const {
-      data: history
-    } =
-      await db
-        .from("procurement_status_history")
-        .select("*")
-        .eq(
-          "procurement_id",
-          id
-        )
-        .order(
-          "created_at",
-          {
-            ascending: true
-          }
-        );
+  const {
+    data,
+    error
+  } =
+    await db
 
+      .from(
+        "procurement_requests"
+      )
 
-    const details =
-      document.getElementById(
-        "detailsContent"
-      );
+      .insert({
 
+        purchase_request_number:
+          finalPR,
 
-    let statusOptions = "";
+        requester_name:
+          requester,
 
+        item_description:
+          description,
 
-    STATUS_LIST.forEach(function(status) {
-
-      const selected =
-        status ===
-        request.current_status
+        estimated_cost:
+          estimatedCost
           ?
-          "selected"
+          Number(estimatedCost)
           :
-          "";
+          null,
+
+        current_status:
+          "Submitted the Request"
+
+      })
+
+      .select()
+
+      .single();
 
 
-      statusOptions +=
-        `<option value="${escapeHtml(status)}" ${selected}>
-          ${escapeHtml(status)}
-        </option>`;
+  if (error) {
 
-    });
+    showMessage(
+      error.message,
+      "error"
+    );
+
+    return;
+
+  }
 
 
-    let historyHtml = "";
+  // Create first history record.
 
+  const {
+    error: historyError
+  } =
+    await db
 
-    if (history && history.length > 0) {
+      .from(
+        "procurement_status_history"
+      )
 
-      history.forEach(function(item) {
+      .insert({
 
-        historyHtml += `
+        procurement_id:
+          data.id,
 
-          <div class="history-item">
+        status:
+          "Submitted the Request",
 
-            <div class="history-status">
-              ${escapeHtml(item.status)}
-            </div>
+        remarks:
+          "Procurement request created.",
 
-            <div>
-              ${escapeHtml(
-                item.remarks || ""
-              )}
-            </div>
-
-            <div class="history-date">
-              ${formatDate(
-                item.created_at
-              )}
-            </div>
-
-          </div>
-
-        `;
+        changed_by:
+          user
+          ?
+          user.id
+          :
+          null
 
       });
 
-    } else {
 
-      historyHtml =
-        "<p>No status history yet.</p>";
+  if (historyError) {
 
-    }
-
-
-    details.innerHTML = `
-
-      <p>
-        <strong>Tracking Code:</strong><br>
-        ${escapeHtml(
-          request.tracking_code
-        )}
-      </p>
-
-
-      <p>
-        <strong>Requester:</strong><br>
-        ${escapeHtml(
-          request.requester_name
-        )}
-      </p>
-
-
-      <p>
-        <strong>Email:</strong><br>
-        ${escapeHtml(
-          request.requester_email || "Not provided"
-        )}
-      </p>
-
-
-      <p>
-        <strong>Contact:</strong><br>
-        ${escapeHtml(
-          request.requester_contact || "Not provided"
-        )}
-      </p>
-
-
-      <p>
-        <strong>Procurement Description:</strong><br>
-        ${escapeHtml(
-          request.item_description
-        )}
-      </p>
-
-
-      <p>
-        <strong>Quantity:</strong><br>
-        ${escapeHtml(
-          request.quantity || "Not specified"
-        )}
-      </p>
-
-
-      <p>
-        <strong>Estimated Cost:</strong><br>
-        ${
-          request.estimated_cost !== null
-          ?
-          "₱" +
-          Number(
-            request.estimated_cost
-          ).toLocaleString(
-            "en-PH",
-            {
-              minimumFractionDigits: 2
-            }
-          )
-          :
-          "Not specified"
-        }
-      </p>
-
-
-      <hr>
-
-
-      <h3>Update Procurement Status</h3>
-
-
-      <div class="form-row">
-
-        <label>
-          Current Status
-        </label>
-
-        <select id="updateStatus">
-
-          ${statusOptions}
-
-        </select>
-
-      </div>
-
-
-      <div class="form-row">
-
-        <label>
-          Remarks
-        </label>
-
-        <textarea
-          id="updateRemarks"
-          placeholder="Enter remarks about this update..."
-        >${escapeHtml(
-          request.remarks || ""
-        )}</textarea>
-
-      </div>
-
-
-      <button
-        class="button"
-        onclick="updateStatus('${request.id}')">
-
-        Update Status
-
-      </button>
-
-
-      <div class="history">
-
-        <h3>
-          Status History
-        </h3>
-
-        ${historyHtml}
-
-      </div>
-
-    `;
-
-
-    document.getElementById(
-      "detailsBox"
-    ).style.display = "block";
-
-
-    document.getElementById(
-      "newRequestBox"
-    ).style.display = "none";
-
-
-    window.scrollTo({
-      top: 300,
-      behavior: "smooth"
-    });
+    console.error(
+      historyError
+    );
 
   }
 
 
-  // ==========================================
-  // UPDATE STATUS
-  // ==========================================
-
-  async function updateStatus(id) {
-
-    const status =
-      document.getElementById(
-        "updateStatus"
-      ).value;
+  showMessage(
+    "Procurement request created successfully.",
+    "success"
+  );
 
 
-    const remarks =
-      document.getElementById(
-        "updateRemarks"
-      ).value.trim();
+  document.getElementById(
+    "purchaseRequestNumber"
+  ).value = "";
 
 
-    const {
-      data: userData
-    } =
-      await db.auth.getUser();
+  document.getElementById(
+    "requesterName"
+  ).value = "";
 
 
-    if (!userData.user) {
+  document.getElementById(
+    "itemDescription"
+  ).value = "";
 
-      window.location.href =
-        "login.html";
 
-      return;
+  document.getElementById(
+    "estimatedCost"
+  ).value = "";
 
+
+  hideNewRequest();
+
+
+  loadRequests();
+
+}
+
+
+// ============================================
+// OPEN UPDATE BOX
+// ============================================
+
+function openUpdateBox(
+  id,
+  pr,
+  currentStatus
+) {
+
+
+  selectedProcurementId =
+    id;
+
+
+  document.getElementById(
+    "updatePR"
+  ).textContent =
+    pr;
+
+
+  document.getElementById(
+    "newStatus"
+  ).value =
+    currentStatus;
+
+
+  document.getElementById(
+    "statusRemarks"
+  ).value =
+    "";
+
+
+  document.getElementById(
+    "updateBox"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "updateBox"
+  ).scrollIntoView({
+    behavior: "smooth"
+  });
+
+}
+
+
+// ============================================
+// HIDE UPDATE
+// ============================================
+
+function hideUpdateBox() {
+
+  selectedProcurementId =
+    null;
+
+
+  document.getElementById(
+    "updateBox"
+  ).style.display =
+    "none";
+
+}
+
+
+// ============================================
+// UPDATE STATUS
+// ============================================
+
+async function updateStatus() {
+
+
+  if (!selectedProcurementId) {
+
+    return;
+
+  }
+
+
+  const status =
+    document.getElementById(
+      "newStatus"
+    ).value;
+
+
+  const remarks =
+    document.getElementById(
+      "statusRemarks"
+    ).value.trim();
+
+
+  const {
+    data: {
+      user
     }
+  } =
+    await db.auth.getUser();
 
 
-    const {
-      data,
-      error
-    } =
-      await db.rpc(
-        "update_procurement_status",
-        {
-          p_procurement_id:
-            id,
+  // Update main procurement record.
 
-          p_status:
-            status,
+  const {
+    error
+  } =
+    await db
 
-          p_remarks:
-            remarks || null
-        }
+      .from(
+        "procurement_requests"
+      )
+
+      .update({
+
+        current_status:
+          status,
+
+        remarks:
+          remarks || null
+
+      })
+
+      .eq(
+        "id",
+        selectedProcurementId
       );
 
 
-    if (error) {
-
-      showMessage(
-        "Error updating status: " +
-        error.message
-      );
-
-      return;
-
-    }
-
+  if (error) {
 
     showMessage(
-      "Procurement status updated successfully."
+      error.message,
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  // Save status history.
+
+  const {
+    error: historyError
+  } =
+    await db
+
+      .from(
+        "procurement_status_history"
+      )
+
+      .insert({
+
+        procurement_id:
+          selectedProcurementId,
+
+        status:
+          status,
+
+        remarks:
+          remarks || null,
+
+        changed_by:
+          user
+          ?
+          user.id
+          :
+          null
+
+      });
+
+
+  if (historyError) {
+
+    showMessage(
+      historyError.message,
+      "error"
+    );
+
+    return;
+
+  }
+
+
+  showMessage(
+    "Procurement status updated successfully.",
+    "success"
+  );
+
+
+  hideUpdateBox();
+
+
+  loadRequests();
+
+}
+
+
+// ============================================
+// LOGOUT
+// ============================================
+
+async function logout() {
+
+  await db.auth.signOut();
+
+  window.location.href =
+    "login.html";
+
+}
+
+
+// ============================================
+// MESSAGE
+// ============================================
+
+function showMessage(
+  text,
+  type
+) {
+
+
+  const message =
+    document.getElementById(
+      "message"
     );
 
 
-    await viewRequest(id);
+  message.textContent =
+    text;
 
-    await loadRequests();
+
+  message.className =
+    "message " +
+    type;
+
+
+  message.style.display =
+    "block";
+
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+
+}
+
+
+// ============================================
+// DATE
+// ============================================
+
+function formatDate(
+  value
+) {
+
+  if (!value) {
+
+    return "";
 
   }
 
 
-  // ==========================================
-  // DATE FORMAT
-  // ==========================================
-
-  function formatDate(value) {
-
-    if (!value) {
-      return "";
-    }
-
-
-    const date =
-      new Date(value);
-
-
-    return date.toLocaleString(
+  return new Date(value)
+    .toLocaleString(
       "en-PH",
       {
         year: "numeric",
@@ -1390,52 +1458,116 @@
       }
     );
 
-  }
+}
 
 
-  // ==========================================
-  // HTML SECURITY
-  // ==========================================
+// ============================================
+// ESCAPE HTML
+// ============================================
 
-  function escapeHtml(value) {
+function escapeHtml(
+  value
+) {
 
-    if (value === null ||
-        value === undefined) {
+  if (
+    value === null ||
+    value === undefined
+  ) {
 
-      return "";
-
-    }
-
-
-    return String(value)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#039;");
+    return "";
 
   }
 
 
-  // ==========================================
-  // START
-  // ==========================================
+  return String(value)
 
-  (async function() {
+    .replace(
+      /&/g,
+      "&amp;"
+    )
 
-    const loggedIn =
-      await checkLogin();
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
 
 
-    if (loggedIn) {
+// ============================================
+// ESCAPE ATTRIBUTE
+// ============================================
 
-      loadRequests();
+function escapeAttribute(
+  value
+) {
 
-    }
+  if (
+    value === null ||
+    value === undefined
+  ) {
 
-  })();
+    return "";
+
+  }
+
+
+  return String(value)
+
+    .replace(
+      /\\/g,
+      "\\\\"
+    )
+
+    .replace(
+      /'/g,
+      "\\'"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    );
+
+}
+
+
+// ============================================
+// INITIALIZE
+// ============================================
+
+(async function() {
+
+  const loggedIn =
+    await checkLogin();
+
+
+  if (loggedIn) {
+
+    loadRequests();
+
+  }
+
+})();
 
 </script>
 
+
 </body>
+
 </html>
