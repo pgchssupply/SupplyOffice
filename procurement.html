@@ -3,664 +3,538 @@
 
 <head>
 
-  <meta charset="UTF-8">
+<meta charset="UTF-8">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
 
-  <title>Procurement - PGCHS Supply Office</title>
+<title>Procurement - PGCHS Supply Office</title>
 
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<style>
 
-  <style>
+* {
+  box-sizing: border-box;
+}
 
-    * {
-      box-sizing: border-box;
-    }
+body {
 
+  margin: 0;
 
-    body {
+  font-family:
+    Arial,
+    Helvetica,
+    sans-serif;
 
-      margin: 0;
+  background: #e9e9e9;
 
-      font-family:
-        Arial,
-        Helvetica,
-        sans-serif;
+  color: #222;
+}
 
-      background: #e9e9e9;
+.page {
 
-      color: #222;
+  width: 960px;
 
-    }
+  max-width: 95%;
 
+  margin: 25px auto;
 
-    .page {
+  background: white;
 
-      width: 960px;
+  border: 1px solid #bbb;
 
-      max-width: 95%;
+  box-shadow:
+    0 2px 8px rgba(0,0,0,0.15);
+}
 
-      margin: 25px auto;
+header {
 
-      background: white;
+  background:
+    linear-gradient(#3c83c4, #14548a);
 
-      border: 1px solid #bbb;
+  color: white;
 
-      box-shadow:
-        0 2px 8px rgba(0,0,0,0.15);
+  padding: 30px;
+}
 
-    }
+header h1 {
 
+  margin: 0;
 
-    header {
+  font-size: 36px;
+}
 
-      background:
-        linear-gradient(
-          #3c83c4,
-          #14548a
-        );
+header p {
 
-      color: white;
+  margin: 8px 0 0;
 
-      padding: 30px;
+  font-size: 15px;
+}
 
-    }
+nav {
 
+  background: #333;
+}
 
-    header h1 {
+nav a {
 
-      margin: 0;
+  display: inline-block;
 
-      font-size: 36px;
+  color: white;
 
-    }
+  text-decoration: none;
 
+  padding: 14px 22px;
 
-    header p {
+  font-size: 14px;
+}
 
-      margin: 8px 0 0;
+nav a:hover {
 
-      font-size: 15px;
+  background: #555;
+}
 
-    }
+.content {
 
+  display: flex;
 
-    nav {
+  min-height: 500px;
+}
 
-      background: #333;
+main {
 
-      padding: 0;
+  flex: 1;
 
-    }
+  padding: 30px;
+}
 
+aside {
 
-    nav a {
+  width: 230px;
 
-      display: inline-block;
+  background: #f3f3f3;
 
-      color: white;
+  border-left: 1px solid #ddd;
 
-      text-decoration: none;
+  padding: 20px;
+}
 
-      padding: 14px 22px;
+h2 {
 
-      font-size: 14px;
+  color: #14548a;
 
-    }
+  margin-top: 0;
+}
 
+h3 {
 
-    nav a:hover {
+  color: #14548a;
+}
 
-      background: #555;
+.welcome {
 
-    }
+  background: #eef7ff;
 
+  border: 1px solid #c5def2;
 
-    .content {
+  padding: 20px;
 
-      display: flex;
+  margin-bottom: 30px;
+}
 
-      min-height: 500px;
 
-    }
+/* ==========================================
+   PR STATUS SEARCH
+========================================== */
 
+.status-box {
 
-    main {
+  border: 1px solid #ccc;
 
-      flex: 1;
+  background: #f7f7f7;
 
-      padding: 30px;
+  padding: 25px;
 
-    }
+  margin-bottom: 35px;
+}
 
+.status-box label {
 
-    aside {
+  display: block;
 
-      width: 230px;
+  font-weight: bold;
 
-      background: #f3f3f3;
+  color: #14548a;
 
-      border-left: 1px solid #ddd;
+  margin-bottom: 8px;
+}
 
-      padding: 20px;
+.pr-input {
 
-    }
+  display: flex;
 
+  width: 100%;
+}
 
-    h2 {
+.pr-prefix {
 
-      color: #14548a;
+  background: #14548a;
 
-      margin-top: 0;
+  color: white;
 
-    }
+  padding: 11px 15px;
 
+  font-weight: bold;
 
-    h3 {
+  border: 1px solid #14548a;
+}
 
-      color: #14548a;
+#prNumber {
 
-    }
+  flex: 1;
 
+  padding: 11px;
 
-    .welcome {
+  border: 1px solid #aaa;
 
-      background: #eef7ff;
+  border-left: 0;
 
-      border: 1px solid #c5def2;
+  font-size: 14px;
+}
 
-      padding: 20px;
+#prNumber:focus {
 
-      margin-bottom: 30px;
+  outline: none;
 
-    }
+  border-color: #2878b9;
+}
 
+.button {
 
-    .pr-form {
+  display: inline-block;
 
-      background: #f7f7f7;
+  background: #2878b9;
 
-      border: 1px solid #ccc;
+  color: white;
 
-      padding: 20px;
+  text-decoration: none;
 
-      margin-bottom: 30px;
+  padding: 10px 18px;
 
-    }
+  border: 0;
 
+  border-radius: 3px;
 
-    label {
+  margin-top: 12px;
 
-      display: block;
+  cursor: pointer;
 
-      font-weight: bold;
+  font-size: 14px;
+}
 
-      color: #14548a;
+.button:hover {
 
-      margin-bottom: 8px;
+  background: #14548a;
+}
 
-    }
 
+/* ==========================================
+   RESULT
+========================================== */
 
-    .pr-input {
+#statusResult {
 
-      display: flex;
+  display: none;
 
-      width: 100%;
+  border: 1px solid #ccc;
 
-    }
+  margin-bottom: 35px;
+}
 
+.result-header {
 
-    .pr-prefix {
+  background: #14548a;
 
-      background: #14548a;
+  color: white;
 
-      color: white;
+  padding: 15px 20px;
+}
 
-      padding: 11px 14px;
+.result-header h2 {
 
-      font-weight: bold;
+  color: white;
 
-      border: 1px solid #14548a;
+  margin: 0;
+}
 
-    }
+.result-body {
 
+  padding: 20px;
+}
 
-    input {
+.result-item {
 
-      flex: 1;
+  margin-bottom: 18px;
+}
 
-      padding: 11px;
+.result-label {
 
-      border: 1px solid #aaa;
+  font-size: 12px;
 
-      border-left: 0;
+  color: #777;
 
-      font-size: 14px;
+  margin-bottom: 5px;
+}
 
-      font-family: Arial, Helvetica, sans-serif;
+.result-value {
 
-    }
+  font-size: 16px;
 
+  font-weight: bold;
 
-    input:focus {
+  color: #14548a;
+}
 
-      outline: none;
+.current-status {
 
-      border-color: #2878b9;
+  display: inline-block;
 
-    }
+  background: #2878b9;
 
+  color: white;
 
-    .button {
+  padding: 8px 12px;
 
-      display: inline-block;
+  font-weight: bold;
 
-      background: #2878b9;
+  border-radius: 3px;
+}
 
-      color: white;
 
-      text-decoration: none;
+/* ==========================================
+   HISTORY
+========================================== */
 
-      padding: 10px 18px;
+.history {
 
-      border: 0;
+  margin-top: 25px;
+}
 
-      border-radius: 3px;
+.history-item {
 
-      margin-top: 15px;
+  border-left: 3px solid #2878b9;
 
-      cursor: pointer;
+  padding-left: 18px;
 
-      font-size: 14px;
+  margin-left: 7px;
 
-    }
+  margin-bottom: 22px;
+}
 
+.history-status {
 
-    .button:hover {
+  font-weight: bold;
 
-      background: #14548a;
+  color: #14548a;
 
-    }
+  font-size: 15px;
+}
 
+.history-date {
 
-    .message {
+  color: #777;
 
-      display: none;
+  font-size: 12px;
 
-      padding: 12px;
+  margin-top: 5px;
+}
 
-      margin-bottom: 20px;
+.history-remarks {
 
-      border: 1px solid;
+  color: #555;
 
-    }
+  font-size: 13px;
 
+  margin-top: 6px;
+}
 
-    .error {
 
-      background: #fff1f1;
+/* ==========================================
+   COMPLETED
+========================================== */
 
-      border-color: #e0aaaa;
+.completed {
 
-      color: #9b2226;
+  margin-top: 20px;
+}
 
-    }
+.completed-table {
 
+  width: 100%;
 
-    .success {
+  border-collapse: collapse;
 
-      background: #eef9ee;
+  border: 1px solid #ccc;
+}
 
-      border-color: #a8d5a8;
+.completed-table th {
 
-      color: #286428;
+  background: #14548a;
 
-    }
+  color: white;
 
+  text-align: left;
 
-    .result {
+  padding: 12px;
 
-      display: none;
+  font-size: 13px;
+}
 
-      border: 1px solid #ccc;
+.completed-table td {
 
-      background: white;
+  border-bottom: 1px solid #ddd;
 
-      margin-top: 25px;
+  padding: 12px;
 
-    }
+  font-size: 13px;
+}
 
+.completed-table tr:hover {
 
-    .result-header {
+  background: #f5f9fc;
+}
 
-      background: #14548a;
+.pr-number {
 
-      color: white;
+  font-weight: bold;
 
-      padding: 15px 20px;
+  color: #14548a;
+}
 
-    }
 
+/* ==========================================
+   MESSAGES
+========================================== */
 
-    .result-header h2 {
+.message {
 
-      color: white;
+  display: none;
 
-      margin: 0;
+  padding: 12px;
 
-      font-size: 22px;
+  margin-bottom: 20px;
 
-    }
+  border: 1px solid;
+}
 
+.error {
 
-    .result-body {
+  display: block;
 
-      padding: 20px;
+  background: #fff1f1;
 
-    }
+  border-color: #e0aaaa;
 
+  color: #9b2226;
+}
 
-    .info-box {
+.loading {
 
-      background: #eef7ff;
+  text-align: center;
 
-      border: 1px solid #c5def2;
+  color: #777;
 
-      padding: 15px;
+  padding: 20px;
+}
 
-      margin-bottom: 20px;
 
-    }
+/* ==========================================
+   SIDEBAR
+========================================== */
 
+.side-box {
 
-    .info-label {
+  background: white;
 
-      font-size: 12px;
+  border: 1px solid #ccc;
 
-      color: #666;
+  padding: 15px;
 
-      margin-bottom: 4px;
+  margin-bottom: 15px;
+}
 
-    }
+.side-box h3 {
 
+  margin-top: 0;
 
-    .info-value {
+  font-size: 17px;
+}
 
-      font-size: 16px;
+.side-box p {
 
-      font-weight: bold;
+  margin: 10px 0;
+}
 
-      color: #14548a;
+.side-box a {
 
-      margin-bottom: 15px;
+  color: #14548a;
 
-    }
+  text-decoration: none;
+}
 
+.side-box a:hover {
 
-    .current-status {
+  text-decoration: underline;
+}
 
-      display: inline-block;
 
-      background: #2878b9;
+/* ==========================================
+   FOOTER
+========================================== */
 
-      color: white;
+footer {
 
-      padding: 8px 12px;
+  background: #333;
 
-      font-weight: bold;
+  color: #ccc;
 
-      border-radius: 3px;
+  text-align: center;
 
-    }
+  padding: 18px;
 
+  font-size: 12px;
+}
 
-    .history {
 
-      margin-top: 25px;
+/* ==========================================
+   MOBILE
+========================================== */
 
-    }
+@media (max-width: 700px) {
 
+  .content {
 
-    .history-item {
+    display: block;
+  }
 
-      position: relative;
+  aside {
 
-      border-left: 3px solid #2878b9;
+    width: auto;
 
-      padding: 0 0 22px 20px;
+    border-left: 0;
 
-      margin-left: 8px;
+    border-top: 1px solid #ddd;
+  }
 
-    }
+  nav a {
 
+    display: block;
+  }
 
-    .history-item:last-child {
+}
 
-      padding-bottom: 0;
-
-    }
-
-
-    .history-item::before {
-
-      content: "";
-
-      position: absolute;
-
-      left: -8px;
-
-      top: 0;
-
-      width: 11px;
-
-      height: 11px;
-
-      background: #2878b9;
-
-      border-radius: 50%;
-
-    }
-
-
-    .history-status {
-
-      font-weight: bold;
-
-      color: #14548a;
-
-      font-size: 15px;
-
-    }
-
-
-    .history-date {
-
-      color: #777;
-
-      font-size: 12px;
-
-      margin-top: 4px;
-
-    }
-
-
-    .history-remarks {
-
-      margin-top: 7px;
-
-      color: #555;
-
-      font-size: 13px;
-
-    }
-
-
-    .completed-section {
-
-      margin-top: 35px;
-
-    }
-
-
-    .completed-table {
-
-      width: 100%;
-
-      border-collapse: collapse;
-
-      background: white;
-
-      border: 1px solid #ccc;
-
-    }
-
-
-    .completed-table th {
-
-      background: #14548a;
-
-      color: white;
-
-      text-align: left;
-
-      padding: 11px;
-
-      font-size: 13px;
-
-    }
-
-
-    .completed-table td {
-
-      border-bottom: 1px solid #ddd;
-
-      padding: 11px;
-
-      font-size: 13px;
-
-      vertical-align: top;
-
-    }
-
-
-    .completed-table tr:hover {
-
-      background: #f5f9fc;
-
-    }
-
-
-    .pr-number {
-
-      color: #14548a;
-
-      font-weight: bold;
-
-    }
-
-
-    .no-data {
-
-      text-align: center;
-
-      color: #777;
-
-      padding: 20px;
-
-    }
-
-
-    .side-box {
-
-      background: white;
-
-      border: 1px solid #ccc;
-
-      padding: 15px;
-
-      margin-bottom: 15px;
-
-    }
-
-
-    .side-box h3 {
-
-      margin-top: 0;
-
-      font-size: 17px;
-
-    }
-
-
-    .side-box p {
-
-      margin: 10px 0;
-
-    }
-
-
-    .side-box a {
-
-      color: #14548a;
-
-      text-decoration: none;
-
-    }
-
-
-    .side-box a:hover {
-
-      text-decoration: underline;
-
-    }
-
-
-    footer {
-
-      background: #333;
-
-      color: #ccc;
-
-      text-align: center;
-
-      padding: 18px;
-
-      font-size: 12px;
-
-    }
-
-
-    @media (max-width: 700px) {
-
-      .content {
-
-        display: block;
-
-      }
-
-
-      aside {
-
-        width: auto;
-
-        border-left: 0;
-
-        border-top: 1px solid #ddd;
-
-      }
-
-
-      nav a {
-
-        display: block;
-
-      }
-
-    }
-
-  </style>
+</style>
 
 </head>
 
@@ -671,359 +545,357 @@
 <div class="page">
 
 
-  <!-- ================================= -->
-  <!-- HEADER -->
-  <!-- ================================= -->
+<!-- ==========================================
+     HEADER
+========================================== -->
 
-  <header>
+<header>
 
-    <h1>
-      Supply Office
-    </h1>
+<h1>
+Supply Office
+</h1>
 
-    <p>
-      Welcome to the PGCHS Supply Office webpage
-    </p>
+<p>
+Welcome to the PGCHS Supply Office webpage
+</p>
 
-  </header>
+</header>
 
 
-  <!-- ================================= -->
-  <!-- NAVIGATION -->
-  <!-- ================================= -->
+<!-- ==========================================
+     NAVIGATION
+========================================== -->
 
-  <nav>
+<nav>
 
-    <a href="index.html">
-      Home
-    </a>
+<a href="index.html">
+Home
+</a>
 
-    <a href="about.html">
-      About
-    </a>
+<a href="#">
+About
+</a>
 
-    <a href="services.html">
-      Services
-    </a>
+<a href="services.html">
+Services
+</a>
 
-    <a href="procurement.html">
-      Procurement
-    </a>
+<a href="procurement.html">
+Procurement
+</a>
 
-    <a href="contact.html">
-      Contact
-    </a>
+<a href="contact.html">
+Contact
+</a>
 
-  </nav>
+</nav>
 
 
-  <div class="content">
+<div class="content">
 
 
-    <main>
+<main>
 
 
-      <!-- ================================= -->
-      <!-- INTRODUCTION -->
-      <!-- ================================= -->
+<!-- ==========================================
+     INTRO
+========================================== -->
 
-      <div class="welcome">
+<div class="welcome">
 
-        <h2>
-          Procurement Status
-        </h2>
+<h2>
+Procurement
+</h2>
 
-        <p>
-          Enter your Purchase Request Number below
-          to check the current progress of your procurement request.
-        </p>
+<p>
+This page allows you to check the progress of your
+Purchase Request.
+</p>
 
-        <p>
-          You may enter the PR number with or without
-          the <strong>PR</strong> prefix.
-        </p>
+<p>
+You may also view completed procurement requests below.
+</p>
 
-      </div>
+</div>
 
 
-      <!-- ================================= -->
-      <!-- MESSAGE -->
-      <!-- ================================= -->
+<!-- ==========================================
+     PR REQUEST STATUS
+========================================== -->
 
-      <div
-        id="message"
-        class="message">
-      </div>
+<div class="status-box">
 
+<h2>
+PR Request Status
+</h2>
 
-      <!-- ================================= -->
-      <!-- SEARCH FORM -->
-      <!-- ================================= -->
+<p>
+Enter your Purchase Request Number to view
+the procurement description, current status,
+and status history.
+</p>
 
-      <div class="pr-form">
 
-        <h2>
-          PR Request Status
-        </h2>
+<label for="prNumber">
 
+Enter Your Purchase Request Number
 
-        <label for="prNumber">
+</label>
 
-          Enter Your Purchase Request Number
 
-        </label>
+<div class="pr-input">
 
+<span class="pr-prefix">
+PR
+</span>
 
-        <div class="pr-input">
+<input
+  type="text"
+  id="prNumber"
+  placeholder="2025-01-001A"
+  autocomplete="off">
 
-          <span class="pr-prefix">
-            PR
-          </span>
+</div>
 
 
-          <input
-            type="text"
-            id="prNumber"
-            placeholder="2025-01-001A"
-            autocomplete="off">
+<button
+  class="button"
+  onclick="checkPR()">
 
-        </div>
+Check PR Status
 
+</button>
 
-        <button
-          class="button"
-          onclick="checkStatus()">
+</div>
 
-          Check Status
 
-        </button>
+<!-- ==========================================
+     MESSAGE
+========================================== -->
 
-      </div>
+<div
+  id="message"
+  class="message">
+</div>
 
 
-      <!-- ================================= -->
-      <!-- STATUS RESULT -->
-      <!-- ================================= -->
+<!-- ==========================================
+     STATUS RESULT
+========================================== -->
 
-      <div
-        id="result"
-        class="result">
+<div
+  id="statusResult">
 
 
-        <div class="result-header">
+<div class="result-header">
 
-          <h2>
-            Procurement Request
-          </h2>
+<h2>
+PR Request Status
+</h2>
 
-        </div>
+</div>
 
 
-        <div class="result-body">
+<div class="result-body">
 
 
-          <div class="info-box">
+<div class="result-item">
 
+<div class="result-label">
+Purchase Request Number
+</div>
 
-            <div class="info-label">
-              Purchase Request Number
-            </div>
+<div
+  id="resultPR"
+  class="result-value">
+</div>
 
-            <div
-              id="resultPR"
-              class="info-value">
-            </div>
+</div>
 
 
-            <div class="info-label">
-              Procurement Description
-            </div>
+<div class="result-item">
 
-            <div
-              id="resultDescription"
-              class="info-value">
-            </div>
+<div class="result-label">
+Procurement Description
+</div>
 
+<div
+  id="resultDescription"
+  class="result-value">
+</div>
 
-            <div class="info-label">
-              Current Status
-            </div>
+</div>
 
-            <div>
 
-              <span
-                id="resultStatus"
-                class="current-status">
-              </span>
+<div class="result-item">
 
-            </div>
+<div class="result-label">
+Current Status
+</div>
 
-          </div>
+<div>
 
+<span
+  id="resultStatus"
+  class="current-status">
+</span>
 
-          <div class="history">
+</div>
 
-            <h3>
-              Procurement Status History
-            </h3>
+</div>
 
 
-            <div
-              id="historyList">
-            </div>
+<div class="history">
 
-          </div>
+<h3>
+Status History
+</h3>
 
+<div
+  id="historyList">
+</div>
 
-        </div>
+</div>
 
-      </div>
 
+</div>
 
-      <!-- ================================= -->
-      <!-- COMPLETED PROCUREMENTS -->
-      <!-- ================================= -->
+</div>
 
-      <div class="completed-section">
 
-        <h2>
-          Completed Procurement Requests
-        </h2>
+<!-- ==========================================
+     COMPLETED
+========================================== -->
 
+<div class="completed">
 
-        <p>
-          Recently completed procurement requests are listed below.
-        </p>
+<h2>
+Completed Procurement Requests
+</h2>
 
+<p>
+The following procurement requests have been completed.
+</p>
 
-        <div style="overflow-x:auto;">
 
-          <table
-            class="completed-table">
+<div style="overflow-x:auto;">
 
-            <thead>
+<table class="completed-table">
 
-              <tr>
+<thead>
 
-                <th>
-                  Purchase Request
-                </th>
+<tr>
 
-                <th>
-                  Description
-                </th>
+<th>
+Purchase Request
+</th>
 
-                <th>
-                  Completed Date
-                </th>
+<th>
+Description
+</th>
 
-              </tr>
+<th>
+Completed Date
+</th>
 
-            </thead>
+</tr>
 
+</thead>
 
-            <tbody
-              id="completedList">
 
-              <tr>
+<tbody
+  id="completedList">
 
-                <td
-                  colspan="3"
-                  class="no-data">
+<tr>
 
-                  Loading completed procurements...
+<td
+  colspan="3"
+  class="loading">
 
-                </td>
+Loading completed procurement requests...
 
-              </tr>
+</td>
 
-            </tbody>
+</tr>
 
-          </table>
+</tbody>
 
-        </div>
+</table>
 
-      </div>
+</div>
 
+</div>
 
-    </main>
 
+</main>
 
-    <!-- ================================= -->
-    <!-- SIDEBAR -->
-    <!-- ================================= -->
 
-    <aside>
+<!-- ==========================================
+     SIDEBAR
+========================================== -->
 
+<aside>
 
-      <div class="side-box">
 
-        <h3>
-          Quick Links
-        </h3>
+<div class="side-box">
 
+<h3>
+Quick Links
+</h3>
 
-        <p>
-          <a href="index.html">
-            Home
-          </a>
-        </p>
+<p>
+<a href="index.html">
+Home
+</a>
+</p>
 
+<p>
+<a href="services.html">
+Services
+</a>
+</p>
 
-        <p>
-          <a href="services.html">
-            Services
-          </a>
-        </p>
+<p>
+<a href="procurement.html">
+Procurement
+</a>
+</p>
 
+<p>
+<a href="contact.html">
+Contact
+</a>
+</p>
 
-        <p>
-          <a href="procurement.html">
-            Procurement
-          </a>
-        </p>
+</div>
 
 
-        <p>
-          <a href="contact.html">
-            Contact
-          </a>
-        </p>
+<div class="side-box">
 
-      </div>
+<h3>
+Procurement Status
+</h3>
 
+<p>
+Use your Purchase Request Number
+to check the progress of your request.
+</p>
 
-      <div class="side-box">
+</div>
 
-        <h3>
-          Procurement
-        </h3>
 
+</aside>
 
-        <p>
-          Use your Purchase Request Number
-          to check the progress of your request.
-        </p>
 
-      </div>
+</div>
 
 
-    </aside>
+<footer>
 
+© 2026 PGCHS Supply.
+All rights reserved.
 
-  </div>
-
-
-  <!-- ================================= -->
-  <!-- FOOTER -->
-  <!-- ================================= -->
-
-  <footer>
-
-    © 2026 PGCHS Supply.
-    All rights reserved.
-
-  </footer>
+</footer>
 
 
 </div>
@@ -1033,50 +905,35 @@
 
 
 // ==================================================
-// SUPABASE CONFIGURATION
+// SUPABASE
 // ==================================================
 
 const SUPABASE_URL =
-  "https://eqjmydhrmhdblzamoenj.supabase.co";
+"https://eqjmydhrmhdblzamoenj.supabase.co";
 
 
 const SUPABASE_PUBLISHABLE_KEY =
-  "sb_publishable_dCPcVA8DeORxtoXC1g1ARA_leR4oYSA";
-
-
-const {
-  createClient
-} = supabase;
+"sb_publishable_dCPcVA8DeORxtoXC1g1ARA_leR4oYSA";
 
 
 const db =
-  createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-  );
+supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_PUBLISHABLE_KEY
+);
 
 
 // ==================================================
-// NORMALIZE PR NUMBER
+// NORMALIZE PR
 // ==================================================
 
 function normalizePR(value) {
 
-
   let pr =
-    value.trim().toUpperCase();
-
-
-  // Remove spaces
-
-  pr =
-    pr.replace(
-      /\s+/g,
-      ""
-    );
-
-
-  // Remove PR prefix if entered
+    value
+      .trim()
+      .toUpperCase()
+      .replace(/\s+/g, "");
 
   if (
     pr.startsWith("PR")
@@ -1087,27 +944,23 @@ function normalizePR(value) {
 
   }
 
-
   return "PR" + pr;
 
 }
 
 
 // ==================================================
-// CHECK PROCUREMENT STATUS
+// CHECK PR
 // ==================================================
 
-async function checkStatus() {
-
+async function checkPR() {
 
   hideMessage();
-
 
   const input =
     document.getElementById(
       "prNumber"
     );
-
 
   const value =
     input.value.trim();
@@ -1115,9 +968,8 @@ async function checkStatus() {
 
   if (!value) {
 
-    showMessage(
-      "Please enter your Purchase Request Number.",
-      "error"
+    showError(
+      "Please enter your Purchase Request Number."
     );
 
     return;
@@ -1133,10 +985,8 @@ async function checkStatus() {
     pr.substring(2);
 
 
-  // Hide previous result
-
   document.getElementById(
-    "result"
+    "statusResult"
   ).style.display =
     "none";
 
@@ -1148,19 +998,20 @@ async function checkStatus() {
     await db.rpc(
       "get_procurement_status",
       {
-        p_purchase_request_number:
-          pr
+        p_pr_number: pr
       }
     );
 
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      "Supabase error:",
+      error
+    );
 
-    showMessage(
-      "Unable to check the procurement status. Please try again.",
-      "error"
+    showError(
+      "Unable to retrieve the procurement status."
     );
 
     return;
@@ -1173,9 +1024,10 @@ async function checkStatus() {
     data.found !== true
   ) {
 
-    showMessage(
-      "No procurement request was found for " + pr + ".",
-      "error"
+    showError(
+      "Purchase Request " +
+      pr +
+      " was not found."
     );
 
     return;
@@ -1183,7 +1035,7 @@ async function checkStatus() {
   }
 
 
-  displayResult(
+  displayPR(
     data
   );
 
@@ -1191,34 +1043,33 @@ async function checkStatus() {
 
 
 // ==================================================
-// DISPLAY RESULT
+// DISPLAY PR
 // ==================================================
 
-function displayResult(
-  data
-) {
+function displayPR(data) {
 
-
-  const request =
-    data.request;
+  const result =
+    document.getElementById(
+      "statusResult"
+    );
 
 
   document.getElementById(
     "resultPR"
   ).textContent =
-    request.purchase_request_number;
+    data.purchase_request_number;
 
 
   document.getElementById(
     "resultDescription"
   ).textContent =
-    request.item_description;
+    data.description;
 
 
   document.getElementById(
     "resultStatus"
   ).textContent =
-    request.current_status;
+    data.current_status;
 
 
   const historyList =
@@ -1239,20 +1090,14 @@ function displayResult(
     history.length === 0
   ) {
 
-    historyList.innerHTML = `
-
-      <p>
-        No status history available.
-      </p>
-
-    `;
+    historyList.innerHTML =
+      "<p>No status history available.</p>";
 
   }
 
 
   history.forEach(
     function(item) {
-
 
       const div =
         document.createElement(
@@ -1298,7 +1143,6 @@ function displayResult(
         status
       );
 
-
       div.appendChild(
         date
       );
@@ -1307,7 +1151,6 @@ function displayResult(
       if (
         item.remarks
       ) {
-
 
         const remarks =
           document.createElement(
@@ -1338,15 +1181,11 @@ function displayResult(
   );
 
 
-  document.getElementById(
-    "result"
-  ).style.display =
+  result.style.display =
     "block";
 
 
-  document.getElementById(
-    "result"
-  ).scrollIntoView({
+  result.scrollIntoView({
     behavior: "smooth",
     block: "start"
   });
@@ -1355,10 +1194,10 @@ function displayResult(
 
 
 // ==================================================
-// LOAD COMPLETED PROCUREMENTS
+// LOAD COMPLETED
 // ==================================================
 
-async function loadCompletedProcurements() {
+async function loadCompleted() {
 
 
   const list =
@@ -1378,7 +1217,11 @@ async function loadCompletedProcurements() {
 
   if (error) {
 
-    console.error(error);
+    console.error(
+      "Completed error:",
+      error
+    );
+
 
     list.innerHTML = `
 
@@ -1386,9 +1229,9 @@ async function loadCompletedProcurements() {
 
         <td
           colspan="3"
-          class="no-data">
+          class="loading">
 
-          Unable to load completed procurements.
+          Unable to load completed procurement requests.
 
         </td>
 
@@ -1412,7 +1255,7 @@ async function loadCompletedProcurements() {
 
         <td
           colspan="3"
-          class="no-data">
+          class="loading">
 
           No completed procurement requests found.
 
@@ -1434,61 +1277,54 @@ async function loadCompletedProcurements() {
   data.forEach(
     function(item) {
 
-
       const row =
         document.createElement(
           "tr"
         );
 
 
-      const prCell =
+      const pr =
         document.createElement(
           "td"
         );
 
-
-      prCell.className =
+      pr.className =
         "pr-number";
 
-
-      prCell.textContent =
+      pr.textContent =
         item.purchase_request_number;
 
 
-      const descriptionCell =
+      const description =
         document.createElement(
           "td"
         );
 
-
-      descriptionCell.textContent =
+      description.textContent =
         item.item_description;
 
 
-      const dateCell =
+      const date =
         document.createElement(
           "td"
         );
 
-
-      dateCell.textContent =
+      date.textContent =
         formatDate(
           item.completed_date
         );
 
 
       row.appendChild(
-        prCell
+        pr
       );
 
-
       row.appendChild(
-        descriptionCell
+        description
       );
 
-
       row.appendChild(
-        dateCell
+        date
       );
 
 
@@ -1506,10 +1342,7 @@ async function loadCompletedProcurements() {
 // DATE FORMAT
 // ==================================================
 
-function formatDate(
-  value
-) {
-
+function formatDate(value) {
 
   if (!value) {
 
@@ -1534,14 +1367,10 @@ function formatDate(
 
 
 // ==================================================
-// MESSAGE
+// ERROR
 // ==================================================
 
-function showMessage(
-  text,
-  type
-) {
-
+function showError(text) {
 
   const message =
     document.getElementById(
@@ -1554,8 +1383,7 @@ function showMessage(
 
 
   message.className =
-    "message " +
-    type;
+    "message error";
 
 
   message.style.display =
@@ -1569,7 +1397,6 @@ function showMessage(
 // ==================================================
 
 function hideMessage() {
-
 
   document.getElementById(
     "message"
@@ -1593,7 +1420,7 @@ document.getElementById(
       event.key === "Enter"
     ) {
 
-      checkStatus();
+      checkPR();
 
     }
 
@@ -1602,11 +1429,10 @@ document.getElementById(
 
 
 // ==================================================
-// INITIALIZE
+// START PAGE
 // ==================================================
 
-loadCompletedProcurements();
-
+loadCompleted();
 
 </script>
 
