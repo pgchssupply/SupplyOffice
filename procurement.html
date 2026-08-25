@@ -1,0 +1,1506 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0">
+
+  <title>
+    Procurement Tracking - PGCHS Supply Office
+  </title>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+  </script>
+
+
+  <style>
+
+    * {
+      box-sizing: border-box;
+    }
+
+
+    body {
+
+      margin: 0;
+
+      font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+      background: #e9e9e9;
+
+      color: #222;
+
+    }
+
+
+    .page {
+
+      width: 960px;
+
+      max-width: 95%;
+
+      margin: 25px auto;
+
+      background: white;
+
+      border: 1px solid #bbb;
+
+      box-shadow:
+        0 2px 8px
+        rgba(0,0,0,0.15);
+
+    }
+
+
+    header {
+
+      background:
+        linear-gradient(
+          #3c83c4,
+          #14548a
+        );
+
+      color: white;
+
+      padding: 30px;
+
+    }
+
+
+    header h1 {
+
+      margin: 0;
+
+      font-size: 36px;
+
+    }
+
+
+    header p {
+
+      margin: 8px 0 0;
+
+      font-size: 15px;
+
+    }
+
+
+    nav {
+
+      background: #333;
+
+      padding: 0;
+
+    }
+
+
+    nav a {
+
+      display: inline-block;
+
+      color: white;
+
+      text-decoration: none;
+
+      padding: 14px 22px;
+
+      font-size: 14px;
+
+    }
+
+
+    nav a:hover {
+
+      background: #555;
+
+    }
+
+
+    .content {
+
+      display: flex;
+
+      min-height: 520px;
+
+    }
+
+
+    main {
+
+      flex: 1;
+
+      padding: 30px;
+
+    }
+
+
+    aside {
+
+      width: 230px;
+
+      background: #f3f3f3;
+
+      border-left: 1px solid #ddd;
+
+      padding: 20px;
+
+    }
+
+
+    h2 {
+
+      color: #14548a;
+
+      margin-top: 0;
+
+    }
+
+
+    h3 {
+
+      color: #14548a;
+
+    }
+
+
+    .tracking-box {
+
+      background: #eef7ff;
+
+      border: 1px solid #c5def2;
+
+      padding: 25px;
+
+      margin-bottom: 25px;
+
+    }
+
+
+    .tracking-title {
+
+      margin-top: 0;
+
+      color: #14548a;
+
+    }
+
+
+    .label {
+
+      display: block;
+
+      font-weight: bold;
+
+      color: #14548a;
+
+      margin-bottom: 8px;
+
+    }
+
+
+    .input-row {
+
+      display: flex;
+
+      align-items: center;
+
+      width: 100%;
+
+      margin-bottom: 12px;
+
+    }
+
+
+    .pr-prefix {
+
+      background: #14548a;
+
+      color: white;
+
+      padding: 11px 14px;
+
+      font-weight: bold;
+
+      border: 1px solid #14548a;
+
+      font-size: 15px;
+
+    }
+
+
+    #prNumber {
+
+      flex: 1;
+
+      padding: 11px;
+
+      border: 1px solid #aaa;
+
+      border-left: 0;
+
+      font-size: 15px;
+
+      outline: none;
+
+    }
+
+
+    #prNumber:focus {
+
+      border-color: #2878b9;
+
+    }
+
+
+    .button {
+
+      display: inline-block;
+
+      background: #2878b9;
+
+      color: white;
+
+      border: 0;
+
+      text-decoration: none;
+
+      padding: 10px 18px;
+
+      border-radius: 3px;
+
+      margin-top: 5px;
+
+      cursor: pointer;
+
+      font-size: 14px;
+
+    }
+
+
+    .button:hover {
+
+      background: #14548a;
+
+    }
+
+
+    .button:disabled {
+
+      background: #888;
+
+      cursor: wait;
+
+    }
+
+
+    .result {
+
+      display: none;
+
+      border: 1px solid #ccc;
+
+      background: white;
+
+      padding: 20px;
+
+      margin-top: 20px;
+
+    }
+
+
+    .result-header {
+
+      background: #eef7ff;
+
+      border: 1px solid #c5def2;
+
+      padding: 15px;
+
+      margin-bottom: 20px;
+
+    }
+
+
+    .result-header h3 {
+
+      margin: 0 0 8px;
+
+    }
+
+
+    .pr-display {
+
+      font-size: 18px;
+
+      font-weight: bold;
+
+      color: #14548a;
+
+    }
+
+
+    .info-row {
+
+      border-bottom: 1px solid #ddd;
+
+      padding: 10px 0;
+
+    }
+
+
+    .info-label {
+
+      font-weight: bold;
+
+      color: #555;
+
+    }
+
+
+    .current-status {
+
+      background: #14548a;
+
+      color: white;
+
+      padding: 15px;
+
+      margin: 20px 0;
+
+      text-align: center;
+
+    }
+
+
+    .current-status-label {
+
+      font-size: 12px;
+
+      margin-bottom: 5px;
+
+    }
+
+
+    .current-status-name {
+
+      font-size: 20px;
+
+      font-weight: bold;
+
+    }
+
+
+    .timeline {
+
+      margin-top: 25px;
+
+    }
+
+
+    .timeline-item {
+
+      position: relative;
+
+      padding: 12px 15px 12px 35px;
+
+      border-left: 3px solid #ccc;
+
+      margin-left: 8px;
+
+    }
+
+
+    .timeline-item::before {
+
+      content: "";
+
+      position: absolute;
+
+      left: -9px;
+
+      top: 15px;
+
+      width: 14px;
+
+      height: 14px;
+
+      background: white;
+
+      border: 3px solid #aaa;
+
+      border-radius: 50%;
+
+    }
+
+
+    .timeline-item.completed {
+
+      border-left-color: #2878b9;
+
+    }
+
+
+    .timeline-item.completed::before {
+
+      background: #2878b9;
+
+      border-color: #2878b9;
+
+    }
+
+
+    .timeline-item.current {
+
+      border-left-color: #14548a;
+
+    }
+
+
+    .timeline-item.current::before {
+
+      background: #14548a;
+
+      border-color: #14548a;
+
+    }
+
+
+    .timeline-status {
+
+      font-weight: bold;
+
+      color: #14548a;
+
+    }
+
+
+    .timeline-date {
+
+      color: #777;
+
+      font-size: 12px;
+
+      margin-top: 4px;
+
+    }
+
+
+    .timeline-remarks {
+
+      margin-top: 5px;
+
+      font-size: 13px;
+
+    }
+
+
+    .error {
+
+      display: none;
+
+      background: #fff1f1;
+
+      border: 1px solid #e0aaaa;
+
+      color: #9b2226;
+
+      padding: 12px;
+
+      margin-top: 15px;
+
+    }
+
+
+    .side-box {
+
+      background: white;
+
+      border: 1px solid #ccc;
+
+      padding: 15px;
+
+      margin-bottom: 15px;
+
+    }
+
+
+    .side-box h3 {
+
+      margin-top: 0;
+
+      font-size: 17px;
+
+    }
+
+
+    .side-box a {
+
+      color: #14548a;
+
+      text-decoration: none;
+
+    }
+
+
+    .side-box a:hover {
+
+      text-decoration: underline;
+
+    }
+
+
+    footer {
+
+      background: #333;
+
+      color: #ccc;
+
+      text-align: center;
+
+      padding: 18px;
+
+      font-size: 12px;
+
+    }
+
+
+    @media (max-width: 700px) {
+
+      .content {
+
+        display: block;
+
+      }
+
+
+      aside {
+
+        width: auto;
+
+        border-left: 0;
+
+        border-top: 1px solid #ddd;
+
+      }
+
+
+      nav a {
+
+        display: block;
+
+      }
+
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<div class="page">
+
+
+  <header>
+
+    <h1>
+      Supply Office
+    </h1>
+
+    <p>
+      Welcome to the PGCHS Supply Office webpage
+    </p>
+
+  </header>
+
+
+  <nav>
+
+    <a href="index.html">
+      Home
+    </a>
+
+    <a href="services.html">
+      Services
+    </a>
+
+    <a href="procurement.html">
+      Procurement
+    </a>
+
+    <a href="contact.html">
+      Contact
+    </a>
+
+  </nav>
+
+
+  <div class="content">
+
+
+    <main>
+
+
+      <h2>
+        Procurement Tracking
+      </h2>
+
+
+      <p>
+        Check the current status of your procurement
+        request using your Purchase Request Number.
+      </p>
+
+
+      <div class="tracking-box">
+
+
+        <h3 class="tracking-title">
+
+          Track Your Procurement
+
+        </h3>
+
+
+        <label class="label">
+
+          ENTER YOUR PURCHASE REQUEST NUMBER
+
+        </label>
+
+
+        <div class="input-row">
+
+
+          <span class="pr-prefix">
+            PR
+          </span>
+
+
+          <input
+            type="text"
+            id="prNumber"
+            placeholder="2025-01-001A"
+            autocomplete="off">
+
+
+        </div>
+
+
+        <button
+          class="button"
+          id="checkButton"
+          onclick="checkProcurement()">
+
+          CHECK STATUS
+
+        </button>
+
+
+        <div
+          id="errorMessage"
+          class="error">
+        </div>
+
+
+      </div>
+
+
+      <div
+        id="result"
+        class="result">
+
+
+        <div class="result-header">
+
+
+          <h3>
+            Procurement Record
+          </h3>
+
+
+          <div
+            class="pr-display"
+            id="displayPR">
+          </div>
+
+
+        </div>
+
+
+        <div
+          class="info-row">
+
+          <span class="info-label">
+            Requester:
+          </span>
+
+          <span id="requester">
+          </span>
+
+        </div>
+
+
+        <div
+          class="info-row">
+
+          <span class="info-label">
+            Procurement:
+          </span>
+
+          <span id="description">
+          </span>
+
+        </div>
+
+
+        <div
+          class="info-row">
+
+          <span class="info-label">
+            Estimated Cost:
+          </span>
+
+          <span id="estimatedCost">
+          </span>
+
+        </div>
+
+
+        <div class="current-status">
+
+
+          <div class="current-status-label">
+
+            CURRENT STATUS
+
+          </div>
+
+
+          <div
+            class="current-status-name"
+            id="currentStatus">
+
+          </div>
+
+
+        </div>
+
+
+        <div class="timeline">
+
+
+          <h3>
+            Procurement Progress
+          </h3>
+
+
+          <div id="timeline">
+          </div>
+
+
+        </div>
+
+
+      </div>
+
+
+    </main>
+
+
+    <aside>
+
+
+      <div class="side-box">
+
+
+        <h3>
+          Quick Links
+        </h3>
+
+
+        <p>
+          <a href="index.html">
+            Home
+          </a>
+        </p>
+
+
+        <p>
+          <a href="services.html">
+            Services
+          </a>
+        </p>
+
+
+        <p>
+          <a href="procurement.html">
+            Procurement
+          </a>
+        </p>
+
+
+        <p>
+          <a href="contact.html">
+            Contact
+          </a>
+        </p>
+
+
+      </div>
+
+
+      <div class="side-box">
+
+
+        <h3>
+          Need Help?
+        </h3>
+
+
+        <p>
+          If you cannot locate your Purchase Request
+          Number, please contact the PGCHS Supply Office.
+        </p>
+
+
+      </div>
+
+
+    </aside>
+
+
+  </div>
+
+
+  <footer>
+
+    © 2026 PGCHS Supply. All rights reserved.
+
+  </footer>
+
+
+</div>
+
+
+<script>
+
+
+// ========================================
+// SUPABASE CONFIGURATION
+// ========================================
+
+const SUPABASE_URL =
+  "https://eqjmydhrmhdblzamoenj.supabase.co";
+
+
+const SUPABASE_PUBLISHABLE_KEY =
+  "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+
+const {
+  createClient
+} = supabase;
+
+
+const db =
+  createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+// ========================================
+// OFFICIAL PROCUREMENT WORKFLOW
+// ========================================
+
+const STATUS_LIST = [
+
+  "Submitted the Request",
+
+  "For BAC Deliberation",
+
+  "For Canvassing",
+
+  "For Bidding",
+
+  "Preparing Procurement Documents",
+
+  "Waiting for Delivery from Supplier",
+
+  "For Issuance",
+
+  "Completed"
+
+];
+
+
+// ========================================
+// CHECK PROCUREMENT
+// ========================================
+
+async function checkProcurement() {
+
+
+  const input =
+    document.getElementById(
+      "prNumber"
+    );
+
+
+  const button =
+    document.getElementById(
+      "checkButton"
+    );
+
+
+  const error =
+    document.getElementById(
+      "errorMessage"
+    );
+
+
+  const result =
+    document.getElementById(
+      "result"
+    );
+
+
+  let value =
+    input.value.trim();
+
+
+  error.style.display =
+    "none";
+
+
+  result.style.display =
+    "none";
+
+
+  if (!value) {
+
+    showError(
+      "Please enter your Purchase Request Number."
+    );
+
+    return;
+
+  }
+
+
+  // Remove PR if user accidentally types it.
+
+  if (
+    value.toUpperCase()
+      .startsWith("PR")
+  ) {
+
+    value =
+      value.substring(2).trim();
+
+  }
+
+
+  // Construct official PR number.
+
+  const purchaseRequestNumber =
+    "PR" + value;
+
+
+  button.disabled =
+    true;
+
+  button.textContent =
+    "CHECKING...";
+
+
+  try {
+
+
+    const {
+      data: request,
+      error: requestError
+    } =
+      await db
+
+        .from(
+          "procurement_requests"
+        )
+
+        .select(
+          "id,purchase_request_number,requester_name,item_description,estimated_cost,current_status,created_at,updated_at"
+        )
+
+        .eq(
+          "purchase_request_number",
+          purchaseRequestNumber
+        )
+
+        .maybeSingle();
+
+
+    if (requestError) {
+
+      throw requestError;
+
+    }
+
+
+    if (!request) {
+
+      showError(
+        "No procurement record was found for Purchase Request Number " +
+        purchaseRequestNumber +
+        ". Please check the number and try again."
+      );
+
+      return;
+
+    }
+
+
+    await displayProcurement(
+      request
+    );
+
+
+  }
+
+  catch (err) {
+
+    showError(
+      "Unable to check the procurement status. " +
+      err.message
+    );
+
+  }
+
+  finally {
+
+    button.disabled =
+      false;
+
+    button.textContent =
+      "CHECK STATUS";
+
+  }
+
+}
+
+
+// ========================================
+// DISPLAY PROCUREMENT
+// ========================================
+
+async function displayProcurement(
+  request
+) {
+
+
+  document.getElementById(
+    "displayPR"
+  ).textContent =
+    request.purchase_request_number;
+
+
+  document.getElementById(
+    "requester"
+  ).textContent =
+    request.requester_name;
+
+
+  document.getElementById(
+    "description"
+  ).textContent =
+    request.item_description;
+
+
+  document.getElementById(
+    "estimatedCost"
+  ).textContent =
+    formatCurrency(
+      request.estimated_cost
+    );
+
+
+  document.getElementById(
+    "currentStatus"
+  ).textContent =
+    request.current_status;
+
+
+  const {
+    data: history,
+    error
+  } =
+    await db
+
+      .from(
+        "procurement_status_history"
+      )
+
+      .select(
+        "status,remarks,created_at"
+      )
+
+      .eq(
+        "procurement_id",
+        request.id
+      )
+
+      .order(
+        "created_at",
+        {
+          ascending: true
+        }
+      );
+
+
+  if (error) {
+
+    showError(
+      "Unable to load procurement history."
+    );
+
+    return;
+
+  }
+
+
+  buildTimeline(
+    request,
+    history || []
+  );
+
+
+  document.getElementById(
+    "result"
+  ).style.display =
+    "block";
+
+
+  document.getElementById(
+    "result"
+  ).scrollIntoView({
+    behavior: "smooth",
+    block: "start"
+  });
+
+}
+
+
+// ========================================
+// BUILD TIMELINE
+// ========================================
+
+function buildTimeline(
+  request,
+  history
+) {
+
+
+  const timeline =
+    document.getElementById(
+      "timeline"
+    );
+
+
+  timeline.innerHTML =
+    "";
+
+
+  const currentIndex =
+    STATUS_LIST.indexOf(
+      request.current_status
+    );
+
+
+  STATUS_LIST.forEach(
+    function(status, index) {
+
+
+      const historyRecord =
+        history.find(
+          function(item) {
+
+            return item.status ===
+              status;
+
+          }
+        );
+
+
+      const item =
+        document.createElement(
+          "div"
+        );
+
+
+      item.className =
+        "timeline-item";
+
+
+      if (
+        index < currentIndex
+      ) {
+
+        item.classList.add(
+          "completed"
+        );
+
+      }
+
+
+      if (
+        index === currentIndex
+      ) {
+
+        item.classList.add(
+          "current"
+        );
+
+      }
+
+
+      let dateText =
+        "";
+
+
+      let remarksText =
+        "";
+
+
+      if (historyRecord) {
+
+        dateText =
+          formatDate(
+            historyRecord.created_at
+          );
+
+
+        if (
+          historyRecord.remarks
+        ) {
+
+          remarksText =
+            escapeHtml(
+              historyRecord.remarks
+            );
+
+        }
+
+      }
+
+
+      item.innerHTML = `
+
+        <div class="timeline-status">
+
+          ${escapeHtml(status)}
+
+        </div>
+
+        ${
+          dateText
+          ?
+          `<div class="timeline-date">
+             ${dateText}
+           </div>`
+          :
+          ""
+        }
+
+        ${
+          remarksText
+          ?
+          `<div class="timeline-remarks">
+             ${remarksText}
+           </div>`
+          :
+          ""
+        }
+
+      `;
+
+
+      timeline.appendChild(
+        item
+      );
+
+    }
+  );
+
+}
+
+
+// ========================================
+// ERROR
+// ========================================
+
+function showError(
+  message
+) {
+
+  const error =
+    document.getElementById(
+      "errorMessage"
+    );
+
+
+  error.textContent =
+    message;
+
+
+  error.style.display =
+    "block";
+
+}
+
+
+// ========================================
+// CURRENCY
+// ========================================
+
+function formatCurrency(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "Not specified";
+
+  }
+
+
+  return Number(value)
+    .toLocaleString(
+      "en-PH",
+      {
+        style: "currency",
+        currency: "PHP"
+      }
+    );
+
+}
+
+
+// ========================================
+// DATE
+// ========================================
+
+function formatDate(
+  value
+) {
+
+  if (!value) {
+
+    return "";
+
+  }
+
+
+  return new Date(value)
+    .toLocaleString(
+      "en-PH",
+      {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    );
+
+}
+
+
+// ========================================
+// SECURITY
+// ========================================
+
+function escapeHtml(
+  value
+) {
+
+  if (
+    value === null ||
+    value === undefined
+  ) {
+
+    return "";
+  }
+
+
+  return String(value)
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+// ========================================
+// ENTER KEY
+// ========================================
+
+document
+  .getElementById(
+    "prNumber"
+  )
+  .addEventListener(
+    "keydown",
+    function(event) {
+
+      if (
+        event.key === "Enter"
+      ) {
+
+        checkProcurement();
+
+      }
+
+    }
+  );
+
+</script>
+
+
+</body>
+
+</html>
