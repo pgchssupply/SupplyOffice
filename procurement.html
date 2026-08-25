@@ -5,17 +5,11 @@
 
   <meta charset="UTF-8">
 
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>
-    Procurement Tracking - PGCHS Supply Office
-  </title>
+  <title>Procurement - PGCHS Supply Office</title>
 
-  <script
-    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 
   <style>
@@ -54,8 +48,7 @@
       border: 1px solid #bbb;
 
       box-shadow:
-        0 2px 8px
-        rgba(0,0,0,0.15);
+        0 2px 8px rgba(0,0,0,0.15);
 
     }
 
@@ -128,7 +121,7 @@
 
       display: flex;
 
-      min-height: 520px;
+      min-height: 500px;
 
     }
 
@@ -171,29 +164,33 @@
     }
 
 
-    .tracking-box {
+    .welcome {
 
       background: #eef7ff;
 
       border: 1px solid #c5def2;
 
-      padding: 25px;
+      padding: 20px;
 
-      margin-bottom: 25px;
-
-    }
-
-
-    .tracking-title {
-
-      margin-top: 0;
-
-      color: #14548a;
+      margin-bottom: 30px;
 
     }
 
 
-    .label {
+    .pr-form {
+
+      background: #f7f7f7;
+
+      border: 1px solid #ccc;
+
+      padding: 20px;
+
+      margin-bottom: 30px;
+
+    }
+
+
+    label {
 
       display: block;
 
@@ -206,15 +203,11 @@
     }
 
 
-    .input-row {
+    .pr-input {
 
       display: flex;
 
-      align-items: center;
-
       width: 100%;
-
-      margin-bottom: 12px;
 
     }
 
@@ -231,12 +224,10 @@
 
       border: 1px solid #14548a;
 
-      font-size: 15px;
-
     }
 
 
-    #prNumber {
+    input {
 
       flex: 1;
 
@@ -246,14 +237,16 @@
 
       border-left: 0;
 
-      font-size: 15px;
+      font-size: 14px;
 
-      outline: none;
+      font-family: Arial, Helvetica, sans-serif;
 
     }
 
 
-    #prNumber:focus {
+    input:focus {
+
+      outline: none;
 
       border-color: #2878b9;
 
@@ -268,15 +261,15 @@
 
       color: white;
 
-      border: 0;
-
       text-decoration: none;
 
       padding: 10px 18px;
 
+      border: 0;
+
       border-radius: 3px;
 
-      margin-top: 5px;
+      margin-top: 15px;
 
       cursor: pointer;
 
@@ -292,11 +285,37 @@
     }
 
 
-    .button:disabled {
+    .message {
 
-      background: #888;
+      display: none;
 
-      cursor: wait;
+      padding: 12px;
+
+      margin-bottom: 20px;
+
+      border: 1px solid;
+
+    }
+
+
+    .error {
+
+      background: #fff1f1;
+
+      border-color: #e0aaaa;
+
+      color: #9b2226;
+
+    }
+
+
+    .success {
+
+      background: #eef9ee;
+
+      border-color: #a8d5a8;
+
+      color: #286428;
 
     }
 
@@ -309,14 +328,41 @@
 
       background: white;
 
-      padding: 20px;
-
-      margin-top: 20px;
+      margin-top: 25px;
 
     }
 
 
     .result-header {
+
+      background: #14548a;
+
+      color: white;
+
+      padding: 15px 20px;
+
+    }
+
+
+    .result-header h2 {
+
+      color: white;
+
+      margin: 0;
+
+      font-size: 22px;
+
+    }
+
+
+    .result-body {
+
+      padding: 20px;
+
+    }
+
+
+    .info-box {
 
       background: #eef7ff;
 
@@ -329,160 +375,107 @@
     }
 
 
-    .result-header h3 {
+    .info-label {
 
-      margin: 0 0 8px;
+      font-size: 12px;
+
+      color: #666;
+
+      margin-bottom: 4px;
 
     }
 
 
-    .pr-display {
+    .info-value {
 
-      font-size: 18px;
+      font-size: 16px;
 
       font-weight: bold;
 
       color: #14548a;
 
-    }
-
-
-    .info-row {
-
-      border-bottom: 1px solid #ddd;
-
-      padding: 10px 0;
-
-    }
-
-
-    .info-label {
-
-      font-weight: bold;
-
-      color: #555;
+      margin-bottom: 15px;
 
     }
 
 
     .current-status {
 
-      background: #14548a;
+      display: inline-block;
+
+      background: #2878b9;
 
       color: white;
 
-      padding: 15px;
-
-      margin: 20px 0;
-
-      text-align: center;
-
-    }
-
-
-    .current-status-label {
-
-      font-size: 12px;
-
-      margin-bottom: 5px;
-
-    }
-
-
-    .current-status-name {
-
-      font-size: 20px;
+      padding: 8px 12px;
 
       font-weight: bold;
 
+      border-radius: 3px;
+
     }
 
 
-    .timeline {
+    .history {
 
       margin-top: 25px;
 
     }
 
 
-    .timeline-item {
+    .history-item {
 
       position: relative;
 
-      padding: 12px 15px 12px 35px;
+      border-left: 3px solid #2878b9;
 
-      border-left: 3px solid #ccc;
+      padding: 0 0 22px 20px;
 
       margin-left: 8px;
 
     }
 
 
-    .timeline-item::before {
+    .history-item:last-child {
+
+      padding-bottom: 0;
+
+    }
+
+
+    .history-item::before {
 
       content: "";
 
       position: absolute;
 
-      left: -9px;
+      left: -8px;
 
-      top: 15px;
+      top: 0;
 
-      width: 14px;
+      width: 11px;
 
-      height: 14px;
+      height: 11px;
 
-      background: white;
-
-      border: 3px solid #aaa;
+      background: #2878b9;
 
       border-radius: 50%;
 
     }
 
 
-    .timeline-item.completed {
-
-      border-left-color: #2878b9;
-
-    }
-
-
-    .timeline-item.completed::before {
-
-      background: #2878b9;
-
-      border-color: #2878b9;
-
-    }
-
-
-    .timeline-item.current {
-
-      border-left-color: #14548a;
-
-    }
-
-
-    .timeline-item.current::before {
-
-      background: #14548a;
-
-      border-color: #14548a;
-
-    }
-
-
-    .timeline-status {
+    .history-status {
 
       font-weight: bold;
 
       color: #14548a;
 
+      font-size: 15px;
+
     }
 
 
-    .timeline-date {
+    .history-date {
 
       color: #777;
 
@@ -493,28 +486,88 @@
     }
 
 
-    .timeline-remarks {
+    .history-remarks {
 
-      margin-top: 5px;
+      margin-top: 7px;
+
+      color: #555;
 
       font-size: 13px;
 
     }
 
 
-    .error {
+    .completed-section {
 
-      display: none;
+      margin-top: 35px;
 
-      background: #fff1f1;
+    }
 
-      border: 1px solid #e0aaaa;
 
-      color: #9b2226;
+    .completed-table {
 
-      padding: 12px;
+      width: 100%;
 
-      margin-top: 15px;
+      border-collapse: collapse;
+
+      background: white;
+
+      border: 1px solid #ccc;
+
+    }
+
+
+    .completed-table th {
+
+      background: #14548a;
+
+      color: white;
+
+      text-align: left;
+
+      padding: 11px;
+
+      font-size: 13px;
+
+    }
+
+
+    .completed-table td {
+
+      border-bottom: 1px solid #ddd;
+
+      padding: 11px;
+
+      font-size: 13px;
+
+      vertical-align: top;
+
+    }
+
+
+    .completed-table tr:hover {
+
+      background: #f5f9fc;
+
+    }
+
+
+    .pr-number {
+
+      color: #14548a;
+
+      font-weight: bold;
+
+    }
+
+
+    .no-data {
+
+      text-align: center;
+
+      color: #777;
+
+      padding: 20px;
 
     }
 
@@ -537,6 +590,13 @@
       margin-top: 0;
 
       font-size: 17px;
+
+    }
+
+
+    .side-box p {
+
+      margin: 10px 0;
 
     }
 
@@ -611,6 +671,10 @@
 <div class="page">
 
 
+  <!-- ================================= -->
+  <!-- HEADER -->
+  <!-- ================================= -->
+
   <header>
 
     <h1>
@@ -624,10 +688,18 @@
   </header>
 
 
+  <!-- ================================= -->
+  <!-- NAVIGATION -->
+  <!-- ================================= -->
+
   <nav>
 
     <a href="index.html">
       Home
+    </a>
+
+    <a href="#">
+      About
     </a>
 
     <a href="services.html">
@@ -651,36 +723,58 @@
     <main>
 
 
-      <h2>
-        Procurement Tracking
-      </h2>
+      <!-- ================================= -->
+      <!-- INTRODUCTION -->
+      <!-- ================================= -->
+
+      <div class="welcome">
+
+        <h2>
+          Procurement Status
+        </h2>
+
+        <p>
+          Enter your Purchase Request Number below
+          to check the current progress of your procurement request.
+        </p>
+
+        <p>
+          You may enter the PR number with or without
+          the <strong>PR</strong> prefix.
+        </p>
+
+      </div>
 
 
-      <p>
-        Check the current status of your procurement
-        request using your Purchase Request Number.
-      </p>
+      <!-- ================================= -->
+      <!-- MESSAGE -->
+      <!-- ================================= -->
+
+      <div
+        id="message"
+        class="message">
+      </div>
 
 
-      <div class="tracking-box">
+      <!-- ================================= -->
+      <!-- SEARCH FORM -->
+      <!-- ================================= -->
+
+      <div class="pr-form">
+
+        <h2>
+          PR Request Status
+        </h2>
 
 
-        <h3 class="tracking-title">
+        <label for="prNumber">
 
-          Track Your Procurement
-
-        </h3>
-
-
-        <label class="label">
-
-          ENTER YOUR PURCHASE REQUEST NUMBER
+          Enter Your Purchase Request Number
 
         </label>
 
 
-        <div class="input-row">
-
+        <div class="pr-input">
 
           <span class="pr-prefix">
             PR
@@ -693,28 +787,23 @@
             placeholder="2025-01-001A"
             autocomplete="off">
 
-
         </div>
 
 
         <button
           class="button"
-          id="checkButton"
-          onclick="checkProcurement()">
+          onclick="checkStatus()">
 
-          CHECK STATUS
+          Check Status
 
         </button>
 
-
-        <div
-          id="errorMessage"
-          class="error">
-        </div>
-
-
       </div>
 
+
+      <!-- ================================= -->
+      <!-- STATUS RESULT -->
+      <!-- ================================= -->
 
       <div
         id="result"
@@ -723,94 +812,136 @@
 
         <div class="result-header">
 
-
-          <h3>
-            Procurement Record
-          </h3>
-
-
-          <div
-            class="pr-display"
-            id="displayPR">
-          </div>
-
+          <h2>
+            Procurement Request
+          </h2>
 
         </div>
 
 
-        <div
-          class="info-row">
-
-          <span class="info-label">
-            Requester:
-          </span>
-
-          <span id="requester">
-          </span>
-
-        </div>
+        <div class="result-body">
 
 
-        <div
-          class="info-row">
-
-          <span class="info-label">
-            Procurement:
-          </span>
-
-          <span id="description">
-          </span>
-
-        </div>
+          <div class="info-box">
 
 
-        <div
-          class="info-row">
+            <div class="info-label">
+              Purchase Request Number
+            </div>
 
-          <span class="info-label">
-            Estimated Cost:
-          </span>
-
-          <span id="estimatedCost">
-          </span>
-
-        </div>
+            <div
+              id="resultPR"
+              class="info-value">
+            </div>
 
 
-        <div class="current-status">
+            <div class="info-label">
+              Procurement Description
+            </div>
+
+            <div
+              id="resultDescription"
+              class="info-value">
+            </div>
 
 
-          <div class="current-status-label">
+            <div class="info-label">
+              Current Status
+            </div>
 
-            CURRENT STATUS
+            <div>
+
+              <span
+                id="resultStatus"
+                class="current-status">
+              </span>
+
+            </div>
 
           </div>
 
 
-          <div
-            class="current-status-name"
-            id="currentStatus">
+          <div class="history">
+
+            <h3>
+              Procurement Status History
+            </h3>
+
+
+            <div
+              id="historyList">
+            </div>
 
           </div>
 
 
         </div>
 
-
-        <div class="timeline">
-
-
-          <h3>
-            Procurement Progress
-          </h3>
+      </div>
 
 
-          <div id="timeline">
-          </div>
+      <!-- ================================= -->
+      <!-- COMPLETED PROCUREMENTS -->
+      <!-- ================================= -->
 
+      <div class="completed-section">
+
+        <h2>
+          Completed Procurement Requests
+        </h2>
+
+
+        <p>
+          Recently completed procurement requests are listed below.
+        </p>
+
+
+        <div style="overflow-x:auto;">
+
+          <table
+            class="completed-table">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Purchase Request
+                </th>
+
+                <th>
+                  Description
+                </th>
+
+                <th>
+                  Completed Date
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody
+              id="completedList">
+
+              <tr>
+
+                <td
+                  colspan="3"
+                  class="no-data">
+
+                  Loading completed procurements...
+
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
 
         </div>
-
 
       </div>
 
@@ -818,11 +949,14 @@
     </main>
 
 
+    <!-- ================================= -->
+    <!-- SIDEBAR -->
+    <!-- ================================= -->
+
     <aside>
 
 
       <div class="side-box">
-
 
         <h3>
           Quick Links
@@ -856,23 +990,20 @@
           </a>
         </p>
 
-
       </div>
 
 
       <div class="side-box">
 
-
         <h3>
-          Need Help?
+          Procurement
         </h3>
 
 
         <p>
-          If you cannot locate your Purchase Request
-          Number, please contact the PGCHS Supply Office.
+          Use your Purchase Request Number
+          to check the progress of your request.
         </p>
-
 
       </div>
 
@@ -883,9 +1014,14 @@
   </div>
 
 
+  <!-- ================================= -->
+  <!-- FOOTER -->
+  <!-- ================================= -->
+
   <footer>
 
-    © 2026 PGCHS Supply. All rights reserved.
+    © 2026 PGCHS Supply.
+    All rights reserved.
 
   </footer>
 
@@ -896,16 +1032,16 @@
 <script>
 
 
-// ========================================
+// ==================================================
 // SUPABASE CONFIGURATION
-// ========================================
+// ==================================================
 
 const SUPABASE_URL =
   "https://eqjmydhrmhdblzamoenj.supabase.co";
 
 
 const SUPABASE_PUBLISHABLE_KEY =
-  "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+  "sb_publishable_dCPcVA8DeORxtoXC1g1ARA_leR4oYSA";
 
 
 const {
@@ -920,36 +1056,51 @@ const db =
   );
 
 
-// ========================================
-// OFFICIAL PROCUREMENT WORKFLOW
-// ========================================
+// ==================================================
+// NORMALIZE PR NUMBER
+// ==================================================
 
-const STATUS_LIST = [
-
-  "Submitted the Request",
-
-  "For BAC Deliberation",
-
-  "For Canvassing",
-
-  "For Bidding",
-
-  "Preparing Procurement Documents",
-
-  "Waiting for Delivery from Supplier",
-
-  "For Issuance",
-
-  "Completed"
-
-];
+function normalizePR(value) {
 
 
-// ========================================
-// CHECK PROCUREMENT
-// ========================================
+  let pr =
+    value.trim().toUpperCase();
 
-async function checkProcurement() {
+
+  // Remove spaces
+
+  pr =
+    pr.replace(
+      /\s+/g,
+      ""
+    );
+
+
+  // Remove PR prefix if entered
+
+  if (
+    pr.startsWith("PR")
+  ) {
+
+    pr =
+      pr.substring(2);
+
+  }
+
+
+  return "PR" + pr;
+
+}
+
+
+// ==================================================
+// CHECK PROCUREMENT STATUS
+// ==================================================
+
+async function checkStatus() {
+
+
+  hideMessage();
 
 
   const input =
@@ -958,40 +1109,15 @@ async function checkProcurement() {
     );
 
 
-  const button =
-    document.getElementById(
-      "checkButton"
-    );
-
-
-  const error =
-    document.getElementById(
-      "errorMessage"
-    );
-
-
-  const result =
-    document.getElementById(
-      "result"
-    );
-
-
-  let value =
+  const value =
     input.value.trim();
-
-
-  error.style.display =
-    "none";
-
-
-  result.style.display =
-    "none";
 
 
   if (!value) {
 
-    showError(
-      "Please enter your Purchase Request Number."
+    showMessage(
+      "Please enter your Purchase Request Number.",
+      "error"
     );
 
     return;
@@ -999,188 +1125,216 @@ async function checkProcurement() {
   }
 
 
-  // Remove PR if user accidentally types it.
+  const pr =
+    normalizePR(value);
+
+
+  input.value =
+    pr.substring(2);
+
+
+  // Hide previous result
+
+  document.getElementById(
+    "result"
+  ).style.display =
+    "none";
+
+
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "get_procurement_status",
+      {
+        p_purchase_request_number:
+          pr
+      }
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    showMessage(
+      "Unable to check the procurement status. Please try again.",
+      "error"
+    );
+
+    return;
+
+  }
+
 
   if (
-    value.toUpperCase()
-      .startsWith("PR")
+    !data ||
+    data.found !== true
   ) {
 
-    value =
-      value.substring(2).trim();
-
-  }
-
-
-  // Construct official PR number.
-
-  const purchaseRequestNumber =
-    "PR" + value;
-
-
-  button.disabled =
-    true;
-
-  button.textContent =
-    "CHECKING...";
-
-
-  try {
-
-
-    const {
-      data: request,
-      error: requestError
-    } =
-      await db
-
-        .from(
-          "procurement_requests"
-        )
-
-        .select(
-          "id,purchase_request_number,requester_name,item_description,estimated_cost,current_status,created_at,updated_at"
-        )
-
-        .eq(
-          "purchase_request_number",
-          purchaseRequestNumber
-        )
-
-        .maybeSingle();
-
-
-    if (requestError) {
-
-      throw requestError;
-
-    }
-
-
-    if (!request) {
-
-      showError(
-        "No procurement record was found for Purchase Request Number " +
-        purchaseRequestNumber +
-        ". Please check the number and try again."
-      );
-
-      return;
-
-    }
-
-
-    await displayProcurement(
-      request
+    showMessage(
+      "No procurement request was found for " + pr + ".",
+      "error"
     );
 
+    return;
 
   }
 
-  catch (err) {
 
-    showError(
-      "Unable to check the procurement status. " +
-      err.message
-    );
-
-  }
-
-  finally {
-
-    button.disabled =
-      false;
-
-    button.textContent =
-      "CHECK STATUS";
-
-  }
+  displayResult(
+    data
+  );
 
 }
 
 
-// ========================================
-// DISPLAY PROCUREMENT
-// ========================================
+// ==================================================
+// DISPLAY RESULT
+// ==================================================
 
-async function displayProcurement(
-  request
+function displayResult(
+  data
 ) {
 
 
+  const request =
+    data.request;
+
+
   document.getElementById(
-    "displayPR"
+    "resultPR"
   ).textContent =
     request.purchase_request_number;
 
 
   document.getElementById(
-    "requester"
-  ).textContent =
-    request.requester_name;
-
-
-  document.getElementById(
-    "description"
+    "resultDescription"
   ).textContent =
     request.item_description;
 
 
   document.getElementById(
-    "estimatedCost"
-  ).textContent =
-    formatCurrency(
-      request.estimated_cost
-    );
-
-
-  document.getElementById(
-    "currentStatus"
+    "resultStatus"
   ).textContent =
     request.current_status;
 
 
-  const {
-    data: history,
-    error
-  } =
-    await db
-
-      .from(
-        "procurement_status_history"
-      )
-
-      .select(
-        "status,remarks,created_at"
-      )
-
-      .eq(
-        "procurement_id",
-        request.id
-      )
-
-      .order(
-        "created_at",
-        {
-          ascending: true
-        }
-      );
-
-
-  if (error) {
-
-    showError(
-      "Unable to load procurement history."
+  const historyList =
+    document.getElementById(
+      "historyList"
     );
 
-    return;
+
+  historyList.innerHTML =
+    "";
+
+
+  const history =
+    data.history || [];
+
+
+  if (
+    history.length === 0
+  ) {
+
+    historyList.innerHTML = `
+
+      <p>
+        No status history available.
+      </p>
+
+    `;
 
   }
 
 
-  buildTimeline(
-    request,
-    history || []
+  history.forEach(
+    function(item) {
+
+
+      const div =
+        document.createElement(
+          "div"
+        );
+
+
+      div.className =
+        "history-item";
+
+
+      const status =
+        document.createElement(
+          "div"
+        );
+
+
+      status.className =
+        "history-status";
+
+
+      status.textContent =
+        item.status;
+
+
+      const date =
+        document.createElement(
+          "div"
+        );
+
+
+      date.className =
+        "history-date";
+
+
+      date.textContent =
+        formatDate(
+          item.updated_at
+        );
+
+
+      div.appendChild(
+        status
+      );
+
+
+      div.appendChild(
+        date
+      );
+
+
+      if (
+        item.remarks
+      ) {
+
+
+        const remarks =
+          document.createElement(
+            "div"
+          );
+
+
+        remarks.className =
+          "history-remarks";
+
+
+        remarks.textContent =
+          item.remarks;
+
+
+        div.appendChild(
+          remarks
+        );
+
+      }
+
+
+      historyList.appendChild(
+        div
+      );
+
+    }
   );
 
 
@@ -1200,142 +1354,146 @@ async function displayProcurement(
 }
 
 
-// ========================================
-// BUILD TIMELINE
-// ========================================
+// ==================================================
+// LOAD COMPLETED PROCUREMENTS
+// ==================================================
 
-function buildTimeline(
-  request,
-  history
-) {
+async function loadCompletedProcurements() {
 
 
-  const timeline =
+  const list =
     document.getElementById(
-      "timeline"
+      "completedList"
     );
 
 
-  timeline.innerHTML =
+  const {
+    data,
+    error
+  } =
+    await db.rpc(
+      "get_completed_procurements"
+    );
+
+
+  if (error) {
+
+    console.error(error);
+
+    list.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="3"
+          class="no-data">
+
+          Unable to load completed procurements.
+
+        </td>
+
+      </tr>
+
+    `;
+
+    return;
+
+  }
+
+
+  if (
+    !data ||
+    data.length === 0
+  ) {
+
+    list.innerHTML = `
+
+      <tr>
+
+        <td
+          colspan="3"
+          class="no-data">
+
+          No completed procurement requests found.
+
+        </td>
+
+      </tr>
+
+    `;
+
+    return;
+
+  }
+
+
+  list.innerHTML =
     "";
 
 
-  const currentIndex =
-    STATUS_LIST.indexOf(
-      request.current_status
-    );
+  data.forEach(
+    function(item) {
 
 
-  STATUS_LIST.forEach(
-    function(status, index) {
-
-
-      const historyRecord =
-        history.find(
-          function(item) {
-
-            return item.status ===
-              status;
-
-          }
-        );
-
-
-      const item =
+      const row =
         document.createElement(
-          "div"
+          "tr"
         );
 
 
-      item.className =
-        "timeline-item";
-
-
-      if (
-        index < currentIndex
-      ) {
-
-        item.classList.add(
-          "completed"
+      const prCell =
+        document.createElement(
+          "td"
         );
 
-      }
+
+      prCell.className =
+        "pr-number";
 
 
-      if (
-        index === currentIndex
-      ) {
+      prCell.textContent =
+        item.purchase_request_number;
 
-        item.classList.add(
-          "current"
+
+      const descriptionCell =
+        document.createElement(
+          "td"
         );
 
-      }
+
+      descriptionCell.textContent =
+        item.item_description;
 
 
-      let dateText =
-        "";
+      const dateCell =
+        document.createElement(
+          "td"
+        );
 
 
-      let remarksText =
-        "";
+      dateCell.textContent =
+        formatDate(
+          item.completed_date
+        );
 
 
-      if (historyRecord) {
-
-        dateText =
-          formatDate(
-            historyRecord.created_at
-          );
+      row.appendChild(
+        prCell
+      );
 
 
-        if (
-          historyRecord.remarks
-        ) {
-
-          remarksText =
-            escapeHtml(
-              historyRecord.remarks
-            );
-
-        }
-
-      }
+      row.appendChild(
+        descriptionCell
+      );
 
 
-      item.innerHTML = `
-
-        <div class="timeline-status">
-
-          ${escapeHtml(status)}
-
-        </div>
-
-        ${
-          dateText
-          ?
-          `<div class="timeline-date">
-             ${dateText}
-           </div>`
-          :
-          ""
-        }
-
-        ${
-          remarksText
-          ?
-          `<div class="timeline-remarks">
-             ${remarksText}
-           </div>`
-          :
-          ""
-        }
-
-      `;
+      row.appendChild(
+        dateCell
+      );
 
 
-      timeline.appendChild(
-        item
+      list.appendChild(
+        row
       );
 
     }
@@ -1344,67 +1502,14 @@ function buildTimeline(
 }
 
 
-// ========================================
-// ERROR
-// ========================================
-
-function showError(
-  message
-) {
-
-  const error =
-    document.getElementById(
-      "errorMessage"
-    );
-
-
-  error.textContent =
-    message;
-
-
-  error.style.display =
-    "block";
-
-}
-
-
-// ========================================
-// CURRENCY
-// ========================================
-
-function formatCurrency(
-  value
-) {
-
-  if (
-    value === null ||
-    value === undefined
-  ) {
-
-    return "Not specified";
-
-  }
-
-
-  return Number(value)
-    .toLocaleString(
-      "en-PH",
-      {
-        style: "currency",
-        currency: "PHP"
-      }
-    );
-
-}
-
-
-// ========================================
-// DATE
-// ========================================
+// ==================================================
+// DATE FORMAT
+// ==================================================
 
 function formatDate(
   value
 ) {
+
 
   if (!value) {
 
@@ -1418,7 +1523,7 @@ function formatDate(
       "en-PH",
       {
         year: "numeric",
-        month: "short",
+        month: "long",
         day: "numeric",
         hour: "numeric",
         minute: "2-digit"
@@ -1428,75 +1533,80 @@ function formatDate(
 }
 
 
-// ========================================
-// SECURITY
-// ========================================
+// ==================================================
+// MESSAGE
+// ==================================================
 
-function escapeHtml(
-  value
+function showMessage(
+  text,
+  type
 ) {
 
-  if (
-    value === null ||
-    value === undefined
-  ) {
 
-    return "";
-  }
-
-
-  return String(value)
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
+  const message =
+    document.getElementById(
+      "message"
     );
+
+
+  message.textContent =
+    text;
+
+
+  message.className =
+    "message " +
+    type;
+
+
+  message.style.display =
+    "block";
 
 }
 
 
-// ========================================
+// ==================================================
+// HIDE MESSAGE
+// ==================================================
+
+function hideMessage() {
+
+
+  document.getElementById(
+    "message"
+  ).style.display =
+    "none";
+
+}
+
+
+// ==================================================
 // ENTER KEY
-// ========================================
+// ==================================================
 
-document
-  .getElementById(
-    "prNumber"
-  )
-  .addEventListener(
-    "keydown",
-    function(event) {
+document.getElementById(
+  "prNumber"
+).addEventListener(
+  "keydown",
+  function(event) {
 
-      if (
-        event.key === "Enter"
-      ) {
+    if (
+      event.key === "Enter"
+    ) {
 
-        checkProcurement();
-
-      }
+      checkStatus();
 
     }
-  );
+
+  }
+);
+
+
+// ==================================================
+// INITIALIZE
+// ==================================================
+
+loadCompletedProcurements();
+
 
 </script>
 
