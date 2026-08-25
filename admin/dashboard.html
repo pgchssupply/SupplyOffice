@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Dashboard - PGCHS Supply Office</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #e9e9e9;
+      color: #222;
+    }
+
+    .page {
+      width: 1100px;
+      max-width: 95%;
+      margin: 25px auto;
+      background: white;
+      border: 1px solid #bbb;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header {
+      background: linear-gradient(#3c83c4, #14548a);
+      color: white;
+      padding: 30px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      font-size: 15px;
+    }
+
+    nav {
+      background: #333;
+    }
+
+    nav a {
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+      padding: 14px 22px;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      background: #555;
+    }
+
+    .content {
+      display: flex;
+      min-height: 600px;
+    }
+
+    main {
+      flex: 1;
+      padding: 30px;
+    }
+
+    aside {
+      width: 230px;
+      background: #f3f3f3;
+      border-left: 1px solid #ddd;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #14548a;
+      margin-top: 0;
+    }
+
+    h3 {
+      color: #14548a;
+    }
+
+    .toolbar {
+      background: #eef7ff;
+      border: 1px solid #c5def2;
+      padding: 15px;
+      margin-bottom: 20px;
+    }
+
+    .toolbar button,
+    .button {
+      background: #2878b9;
+      color: white;
+      border: 0;
+      text-decoration: none;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-size: 14px;
+      margin-right: 5px;
+    }
+
+    .toolbar button:hover,
+    .button:hover {
+      background: #14548a;
+    }
+
+    .logout {
+      background: #777 !important;
+    }
+
+    .logout:hover {
+      background: #555 !important;
+    }
+
+    .table-container {
+      overflow-x: auto;
+      border: 1px solid #ccc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: white;
+    }
+
+    th {
+      background: #14548a;
+      color: white;
+      text-align: left;
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    td {
+      border-bottom: 1px solid #ddd;
+      padding: 10px;
+      font-size: 13px;
+    }
+
+    tr:hover {
+      background: #f2f8fc;
+    }
+
+    .status {
+      display: inline-block;
+      padding: 5px 8px;
+      background: #eef7ff;
+      border: 1px solid #c5def2;
+      color: #14548a;
+      font-size: 12px;
+    }
+
+    .view-button {
+      background: #2878b9;
+      color: white;
+      border: 0;
+      padding: 7px 10px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+
+    .view-button:hover {
+      background: #14548a;
+    }
+
+    .form-box {
+      display: none;
+      background: #f7f7f7;
+      border: 1px solid #ccc;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .form-row {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: bold;
+      color: #14548a;
+      margin-bottom: 5px;
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #aaa;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 14px;
+    }
+
+    textarea {
+      min-height: 80px;
+      resize: vertical;
+    }
+
+    .message {
+      display: none;
+      background: white;
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    .history {
+      margin-top: 20px;
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+    }
+
+    .history-item {
+      border-left: 4px solid #2878b9;
+      background: white;
+      border: 1px solid #ddd;
+      padding: 12px;
+      margin-bottom: 10px;
+    }
+
+    .history-status {
+      font-weight: bold;
+      color: #14548a;
+    }
+
+    .history-date {
+      color: #777;
+      font-size: 12px;
+      margin-top: 5px;
+    }
+
+    .side-box {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .side-box h3 {
+      margin-top: 0;
+      font-size: 17px;
+    }
+
+    .side-box a {
+      color: #14548a;
+      text-decoration: none;
+    }
+
+    .side-box a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background: #333;
+      color: #ccc;
+      text-align: center;
+      padding: 18px;
+      font-size: 12px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 25px;
+      color: #777;
+    }
+
+    @media (max-width: 700px) {
+
+      .content {
+        display: block;
+      }
+
+      aside {
+        width: auto;
+        border-left: 0;
+        border-top: 1px solid #ddd;
+      }
+
+      nav a {
+        display: block;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <header>
+    <h1>Supply Office</h1>
+    <p>PGCHS Supply Office Administration</p>
+  </header>
+
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../services.html">Services</a>
+    <a href="../procurement.html">Procurement</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+
+
+  <div class="content">
+
+    <main>
+
+      <h2>Procurement Dashboard</h2>
+
+      <p>
+        Welcome, Administrator.
+        Manage procurement requests and update their progress below.
+      </p>
+
+
+      <div class="toolbar">
+
+        <button
+          onclick="showNewRequest()">
+          + New Procurement Request
+        </button>
+
+        <button
+          class="logout"
+          onclick="logout()">
+          Logout
+        </button>
+
+      </div>
+
+
+      <div
+        id="message"
+        class="message">
+      </div>
+
+
+      <!-- NEW PROCUREMENT FORM -->
+
+      <div
+        id="newRequestBox"
+        class="form-box">
+
+        <h3>New Procurement Request</h3>
+
+        <form id="newRequestForm">
+
+          <div class="form-row">
+
+            <label>
+              Requester Name
+            </label>
+
+            <input
+              type="text"
+              id="requesterName"
+              required>
+
+          </div>
+
+
+          <div class="form-row">
+
+            <label>
+              Requester Email
+            </label>
+
+            <input
+              type="email"
+              id="requesterEmail">
+
+          </div>
+
+
+          <div class="form-row">
+
+            <label>
+              Contact Number
+            </label>
+
+            <input
+              type="text"
+              id="requesterContact">
+
+          </div>
+
+
+          <div class="form-row">
+
+            <label>
+              Item / Procurement Description
+            </label>
+
+            <textarea
+              id="itemDescription"
+              required></textarea>
+
+          </div>
+
+
+          <div class="form-row">
+
+            <label>
+              Quantity
+            </label>
+
+            <input
+              type="text"
+              id="quantity">
+
+          </div>
+
+
+          <div class="form-row">
+
+            <label>
+              Estimated Cost
+            </label>
+
+            <input
+              type="number"
+              step="0.01"
+              id="estimatedCost">
+
+          </div>
+
+
+          <button
+            type="submit"
+            class="button">
+
+            Create Request
+
+          </button>
+
+
+          <button
+            type="button"
+            class="button logout"
+            onclick="hideNewRequest()">
+
+            Cancel
+
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <!-- REQUEST DETAILS -->
+
+      <div
+        id="detailsBox"
+        class="form-box">
+
+        <h3>Procurement Details</h3>
+
+        <div id="detailsContent"></div>
+
+      </div>
+
+
+      <!-- REQUEST LIST -->
+
+      <h3>Procurement Requests</h3>
+
+      <div class="table-container">
+
+        <table>
+
+          <thead>
+
+            <tr>
+
+              <th>Tracking Code</th>
+
+              <th>Requester</th>
+
+              <th>Description</th>
+
+              <th>Status</th>
+
+              <th>Updated</th>
+
+              <th>Action</th>
+
+            </tr>
+
+          </thead>
+
+          <tbody id="requestTable">
+
+            <tr>
+
+              <td
+                colspan="6"
+                class="loading">
+
+                Loading procurement requests...
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
+
+    </main>
+
+
+    <aside>
+
+      <div class="side-box">
+
+        <h3>Quick Links</h3>
+
+        <p>
+          <a href="../index.html">
+            Home
+          </a>
+        </p>
+
+        <p>
+          <a href="../services.html">
+            Services
+          </a>
+        </p>
+
+        <p>
+          <a href="../procurement.html">
+            Procurement
+          </a>
+        </p>
+
+        <p>
+          <a href="../contact.html">
+            Contact
+          </a>
+        </p>
+
+      </div>
+
+
+      <div class="side-box">
+
+        <h3>Administration</h3>
+
+        <p>
+          Authorized Supply Office personnel only.
+        </p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <footer>
+    © 2026 PGCHS Supply. All rights reserved.
+  </footer>
+
+</div>
+
+
+<script>
+
+  // ==========================================
+  // SUPABASE CONFIGURATION
+  // ==========================================
+
+  const SUPABASE_URL =
+    "https://eqjmydhrmhdblzamoenj.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+
+  const { createClient } = supabase;
+
+
+  const db = createClient(
+    SUPABASE_URL,
+    SUPABASE_PUBLISHABLE_KEY
+  );
+
+
+  // ==========================================
+  // STATUS LIST
+  // ==========================================
+
+  const STATUS_LIST = [
+
+    "Submitted the Request",
+
+    "For BAC Deliberation",
+
+    "For Canvassing",
+
+    "For Bidding",
+
+    "Preparing Procurement Documents",
+
+    "Waiting for Delivery from Supplier",
+
+    "For Issuance",
+
+    "Completed"
+
+  ];
+
+
+  // ==========================================
+  // CHECK LOGIN
+  // ==========================================
+
+  async function checkLogin() {
+
+    const { data, error } =
+      await db.auth.getSession();
+
+
+    if (error || !data.session) {
+
+      window.location.href =
+        "login.html";
+
+      return false;
+
+    }
+
+
+    return true;
+
+  }
+
+
+  // ==========================================
+  // LOGOUT
+  // ==========================================
+
+  async function logout() {
+
+    await db.auth.signOut();
+
+    window.location.href =
+      "login.html";
+
+  }
+
+
+  // ==========================================
+  // MESSAGE
+  // ==========================================
+
+  function showMessage(text) {
+
+    const message =
+      document.getElementById("message");
+
+    message.textContent = text;
+
+    message.style.display = "block";
+
+  }
+
+
+  // ==========================================
+  // NEW REQUEST FORM
+  // ==========================================
+
+  function showNewRequest() {
+
+    document.getElementById(
+      "newRequestBox"
+    ).style.display = "block";
+
+    document.getElementById(
+      "detailsBox"
+    ).style.display = "none";
+
+    window.scrollTo({
+      top: 300,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  function hideNewRequest() {
+
+    document.getElementById(
+      "newRequestBox"
+    ).style.display = "none";
+
+  }
+
+
+  // ==========================================
+  // GENERATE TRACKING CODE
+  // ==========================================
+
+  function generateTrackingCode() {
+
+    const year =
+      new Date().getFullYear();
+
+    const randomNumber =
+      Math.floor(
+        10000 +
+        Math.random() * 90000
+      );
+
+    return "PGCHS-" +
+      year +
+      "-" +
+      randomNumber;
+
+  }
+
+
+  // ==========================================
+  // CREATE PROCUREMENT REQUEST
+  // ==========================================
+
+  document.getElementById(
+    "newRequestForm"
+  ).addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const requesterName =
+        document.getElementById(
+          "requesterName"
+        ).value.trim();
+
+
+      const requesterEmail =
+        document.getElementById(
+          "requesterEmail"
+        ).value.trim();
+
+
+      const requesterContact =
+        document.getElementById(
+          "requesterContact"
+        ).value.trim();
+
+
+      const itemDescription =
+        document.getElementById(
+          "itemDescription"
+        ).value.trim();
+
+
+      const quantity =
+        document.getElementById(
+          "quantity"
+        ).value.trim();
+
+
+      const estimatedCost =
+        document.getElementById(
+          "estimatedCost"
+        ).value;
+
+
+      const trackingCode =
+        generateTrackingCode();
+
+
+      const {
+        data: userData
+      } =
+        await db.auth.getUser();
+
+
+      if (!userData.user) {
+
+        window.location.href =
+          "login.html";
+
+        return;
+
+      }
+
+
+      const {
+        data,
+        error
+      } =
+        await db
+          .from("procurement_requests")
+          .insert({
+
+            tracking_code:
+              trackingCode,
+
+            requester_name:
+              requesterName,
+
+            requester_email:
+              requesterEmail,
+
+            requester_contact:
+              requesterContact,
+
+            item_description:
+              itemDescription,
+
+            quantity:
+              quantity,
+
+            estimated_cost:
+              estimatedCost
+              ?
+              parseFloat(estimatedCost)
+              :
+              null,
+
+            current_status:
+              "Submitted the Request"
+
+          })
+          .select()
+          .single();
+
+
+      if (error) {
+
+        showMessage(
+          "Error creating request: " +
+          error.message
+        );
+
+        return;
+
+      }
+
+
+      // Create initial history
+
+      await db
+        .from("procurement_status_history")
+        .insert({
+
+          procurement_id:
+            data.id,
+
+          status:
+            "Submitted the Request",
+
+          remarks:
+            "Procurement request created."
+
+        });
+
+
+      showMessage(
+        "Procurement request created successfully. " +
+        "Tracking Code: " +
+        trackingCode
+      );
+
+
+      document.getElementById(
+        "newRequestForm"
+      ).reset();
+
+
+      hideNewRequest();
+
+
+      loadRequests();
+
+    }
+  );
+
+
+  // ==========================================
+  // LOAD REQUESTS
+  // ==========================================
+
+  async function loadRequests() {
+
+    const table =
+      document.getElementById(
+        "requestTable"
+      );
+
+
+    table.innerHTML =
+      `<tr>
+        <td colspan="6" class="loading">
+          Loading procurement requests...
+        </td>
+      </tr>`;
+
+
+    const {
+      data,
+      error
+    } =
+      await db
+        .from("procurement_requests")
+        .select("*")
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
+
+
+    if (error) {
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="6">
+            Error loading requests:
+            ${escapeHtml(error.message)}
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    if (!data || data.length === 0) {
+
+      table.innerHTML =
+        `<tr>
+          <td colspan="6" class="loading">
+            No procurement requests found.
+          </td>
+        </tr>`;
+
+      return;
+
+    }
+
+
+    table.innerHTML = "";
+
+
+    data.forEach(function(request) {
+
+      const row =
+        document.createElement("tr");
+
+
+      row.innerHTML = `
+
+        <td>
+          <strong>
+            ${escapeHtml(
+              request.tracking_code
+            )}
+          </strong>
+        </td>
+
+        <td>
+          ${escapeHtml(
+            request.requester_name
+          )}
+        </td>
+
+        <td>
+          ${escapeHtml(
+            request.item_description
+          )}
+        </td>
+
+        <td>
+          <span class="status">
+            ${escapeHtml(
+              request.current_status
+            )}
+          </span>
+        </td>
+
+        <td>
+          ${formatDate(
+            request.updated_at
+          )}
+        </td>
+
+        <td>
+
+          <button
+            class="view-button"
+            onclick="viewRequest('${request.id}')">
+
+            View
+
+          </button>
+
+        </td>
+
+      `;
+
+
+      table.appendChild(row);
+
+    });
+
+  }
+
+
+  // ==========================================
+  // VIEW REQUEST
+  // ==========================================
+
+  async function viewRequest(id) {
+
+    const {
+      data: request,
+      error
+    } =
+      await db
+        .from("procurement_requests")
+        .select("*")
+        .eq("id", id)
+        .single();
+
+
+    if (error) {
+
+      showMessage(
+        "Error loading request: " +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    const {
+      data: history
+    } =
+      await db
+        .from("procurement_status_history")
+        .select("*")
+        .eq(
+          "procurement_id",
+          id
+        )
+        .order(
+          "created_at",
+          {
+            ascending: true
+          }
+        );
+
+
+    const details =
+      document.getElementById(
+        "detailsContent"
+      );
+
+
+    let statusOptions = "";
+
+
+    STATUS_LIST.forEach(function(status) {
+
+      const selected =
+        status ===
+        request.current_status
+          ?
+          "selected"
+          :
+          "";
+
+
+      statusOptions +=
+        `<option value="${escapeHtml(status)}" ${selected}>
+          ${escapeHtml(status)}
+        </option>`;
+
+    });
+
+
+    let historyHtml = "";
+
+
+    if (history && history.length > 0) {
+
+      history.forEach(function(item) {
+
+        historyHtml += `
+
+          <div class="history-item">
+
+            <div class="history-status">
+              ${escapeHtml(item.status)}
+            </div>
+
+            <div>
+              ${escapeHtml(
+                item.remarks || ""
+              )}
+            </div>
+
+            <div class="history-date">
+              ${formatDate(
+                item.created_at
+              )}
+            </div>
+
+          </div>
+
+        `;
+
+      });
+
+    } else {
+
+      historyHtml =
+        "<p>No status history yet.</p>";
+
+    }
+
+
+    details.innerHTML = `
+
+      <p>
+        <strong>Tracking Code:</strong><br>
+        ${escapeHtml(
+          request.tracking_code
+        )}
+      </p>
+
+
+      <p>
+        <strong>Requester:</strong><br>
+        ${escapeHtml(
+          request.requester_name
+        )}
+      </p>
+
+
+      <p>
+        <strong>Email:</strong><br>
+        ${escapeHtml(
+          request.requester_email || "Not provided"
+        )}
+      </p>
+
+
+      <p>
+        <strong>Contact:</strong><br>
+        ${escapeHtml(
+          request.requester_contact || "Not provided"
+        )}
+      </p>
+
+
+      <p>
+        <strong>Procurement Description:</strong><br>
+        ${escapeHtml(
+          request.item_description
+        )}
+      </p>
+
+
+      <p>
+        <strong>Quantity:</strong><br>
+        ${escapeHtml(
+          request.quantity || "Not specified"
+        )}
+      </p>
+
+
+      <p>
+        <strong>Estimated Cost:</strong><br>
+        ${
+          request.estimated_cost !== null
+          ?
+          "₱" +
+          Number(
+            request.estimated_cost
+          ).toLocaleString(
+            "en-PH",
+            {
+              minimumFractionDigits: 2
+            }
+          )
+          :
+          "Not specified"
+        }
+      </p>
+
+
+      <hr>
+
+
+      <h3>Update Procurement Status</h3>
+
+
+      <div class="form-row">
+
+        <label>
+          Current Status
+        </label>
+
+        <select id="updateStatus">
+
+          ${statusOptions}
+
+        </select>
+
+      </div>
+
+
+      <div class="form-row">
+
+        <label>
+          Remarks
+        </label>
+
+        <textarea
+          id="updateRemarks"
+          placeholder="Enter remarks about this update..."
+        >${escapeHtml(
+          request.remarks || ""
+        )}</textarea>
+
+      </div>
+
+
+      <button
+        class="button"
+        onclick="updateStatus('${request.id}')">
+
+        Update Status
+
+      </button>
+
+
+      <div class="history">
+
+        <h3>
+          Status History
+        </h3>
+
+        ${historyHtml}
+
+      </div>
+
+    `;
+
+
+    document.getElementById(
+      "detailsBox"
+    ).style.display = "block";
+
+
+    document.getElementById(
+      "newRequestBox"
+    ).style.display = "none";
+
+
+    window.scrollTo({
+      top: 300,
+      behavior: "smooth"
+    });
+
+  }
+
+
+  // ==========================================
+  // UPDATE STATUS
+  // ==========================================
+
+  async function updateStatus(id) {
+
+    const status =
+      document.getElementById(
+        "updateStatus"
+      ).value;
+
+
+    const remarks =
+      document.getElementById(
+        "updateRemarks"
+      ).value.trim();
+
+
+    const {
+      data: userData
+    } =
+      await db.auth.getUser();
+
+
+    if (!userData.user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    const {
+      data,
+      error
+    } =
+      await db.rpc(
+        "update_procurement_status",
+        {
+          p_procurement_id:
+            id,
+
+          p_status:
+            status,
+
+          p_remarks:
+            remarks || null
+        }
+      );
+
+
+    if (error) {
+
+      showMessage(
+        "Error updating status: " +
+        error.message
+      );
+
+      return;
+
+    }
+
+
+    showMessage(
+      "Procurement status updated successfully."
+    );
+
+
+    await viewRequest(id);
+
+    await loadRequests();
+
+  }
+
+
+  // ==========================================
+  // DATE FORMAT
+  // ==========================================
+
+  function formatDate(value) {
+
+    if (!value) {
+      return "";
+    }
+
+
+    const date =
+      new Date(value);
+
+
+    return date.toLocaleString(
+      "en-PH",
+      {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit"
+      }
+    );
+
+  }
+
+
+  // ==========================================
+  // HTML SECURITY
+  // ==========================================
+
+  function escapeHtml(value) {
+
+    if (value === null ||
+        value === undefined) {
+
+      return "";
+
+    }
+
+
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+
+  }
+
+
+  // ==========================================
+  // START
+  // ==========================================
+
+  (async function() {
+
+    const loggedIn =
+      await checkLogin();
+
+
+    if (loggedIn) {
+
+      loadRequests();
+
+    }
+
+  })();
+
+</script>
+
+</body>
+</html>
