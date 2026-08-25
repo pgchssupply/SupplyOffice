@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Admin Login - PGCHS Supply Office</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #e9e9e9;
+      color: #222;
+    }
+
+    .page {
+      width: 960px;
+      max-width: 95%;
+      margin: 25px auto;
+      background: white;
+      border: 1px solid #bbb;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+
+    header {
+      background: linear-gradient(#3c83c4, #14548a);
+      color: white;
+      padding: 30px;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 36px;
+    }
+
+    header p {
+      margin: 8px 0 0;
+      font-size: 15px;
+    }
+
+    nav {
+      background: #333;
+    }
+
+    nav a {
+      display: inline-block;
+      color: white;
+      text-decoration: none;
+      padding: 14px 22px;
+      font-size: 14px;
+    }
+
+    nav a:hover {
+      background: #555;
+    }
+
+    .content {
+      display: flex;
+      min-height: 500px;
+    }
+
+    main {
+      flex: 1;
+      padding: 30px;
+    }
+
+    aside {
+      width: 230px;
+      background: #f3f3f3;
+      border-left: 1px solid #ddd;
+      padding: 20px;
+    }
+
+    h2 {
+      color: #14548a;
+      margin-top: 0;
+    }
+
+    .login-box {
+      max-width: 480px;
+      background: #eef7ff;
+      border: 1px solid #c5def2;
+      padding: 25px;
+      margin-top: 20px;
+    }
+
+    .login-box label {
+      display: block;
+      font-weight: bold;
+      color: #14548a;
+      margin-bottom: 6px;
+    }
+
+    .login-box input {
+      width: 100%;
+      padding: 11px;
+      border: 1px solid #aaa;
+      margin-bottom: 18px;
+      font-size: 15px;
+    }
+
+    .login-button {
+      background: #2878b9;
+      color: white;
+      border: 0;
+      padding: 11px 22px;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .login-button:hover {
+      background: #14548a;
+    }
+
+    .message {
+      margin-top: 15px;
+      padding: 10px;
+      display: none;
+      border: 1px solid #ccc;
+      background: white;
+    }
+
+    .side-box {
+      background: white;
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+
+    .side-box h3 {
+      margin-top: 0;
+      color: #14548a;
+      font-size: 17px;
+    }
+
+    .side-box a {
+      color: #14548a;
+      text-decoration: none;
+    }
+
+    .side-box a:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      background: #333;
+      color: #ccc;
+      text-align: center;
+      padding: 18px;
+      font-size: 12px;
+    }
+
+    @media (max-width: 700px) {
+
+      .content {
+        display: block;
+      }
+
+      aside {
+        width: auto;
+        border-left: 0;
+        border-top: 1px solid #ddd;
+      }
+
+      nav a {
+        display: block;
+      }
+
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="page">
+
+  <!-- HEADER -->
+
+  <header>
+    <h1>Supply Office</h1>
+    <p>PGCHS Supply Office Administration</p>
+  </header>
+
+
+  <!-- NAVIGATION -->
+
+  <nav>
+    <a href="../index.html">Home</a>
+    <a href="../services.html">Services</a>
+    <a href="../procurement.html">Procurement</a>
+    <a href="../contact.html">Contact</a>
+  </nav>
+
+
+  <!-- CONTENT -->
+
+  <div class="content">
+
+    <main>
+
+      <h2>Administrator Login</h2>
+
+      <p>
+        This area is restricted to authorized PGCHS Supply
+        Office personnel.
+      </p>
+
+
+      <div class="login-box">
+
+        <form id="loginForm">
+
+          <label for="email">
+            Email
+          </label>
+
+          <input
+            type="email"
+            id="email"
+            placeholder="Enter administrator email"
+            required
+          >
+
+
+          <label for="password">
+            Password
+          </label>
+
+          <input
+            type="password"
+            id="password"
+            placeholder="Enter password"
+            required
+          >
+
+
+          <button
+            type="submit"
+            class="login-button"
+            id="loginButton"
+          >
+            Login
+          </button>
+
+        </form>
+
+
+        <div
+          id="message"
+          class="message"
+        ></div>
+
+      </div>
+
+    </main>
+
+
+    <!-- SIDEBAR -->
+
+    <aside>
+
+      <div class="side-box">
+
+        <h3>Quick Links</h3>
+
+        <p>
+          <a href="../index.html">
+            Home
+          </a>
+        </p>
+
+        <p>
+          <a href="../services.html">
+            Services
+          </a>
+        </p>
+
+        <p>
+          <a href="../procurement.html">
+            Procurement
+          </a>
+        </p>
+
+        <p>
+          <a href="../contact.html">
+            Contact
+          </a>
+        </p>
+
+      </div>
+
+
+      <div class="side-box">
+
+        <h3>Administration</h3>
+
+        <p>
+          Authorized Supply Office personnel only.
+        </p>
+
+      </div>
+
+    </aside>
+
+  </div>
+
+
+  <!-- FOOTER -->
+
+  <footer>
+    © 2026 PGCHS Supply. All rights reserved.
+  </footer>
+
+</div>
+
+
+<script>
+
+  // ==========================================
+  // SUPABASE CONFIGURATION
+  // ==========================================
+
+  const SUPABASE_URL =
+    "https://eqjmydhrmhdblzamoenj.supabase.co";
+
+  const SUPABASE_PUBLISHABLE_KEY =
+    "PASTE_YOUR_SUPABASE_PUBLISHABLE_KEY_HERE";
+
+
+  const { createClient } =
+    supabase;
+
+
+  const db =
+    createClient(
+      SUPABASE_URL,
+      SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+  // ==========================================
+  // LOGIN
+  // ==========================================
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const message =
+    document.getElementById("message");
+
+  const loginButton =
+    document.getElementById("loginButton");
+
+
+  loginForm.addEventListener(
+    "submit",
+    async function(event) {
+
+      event.preventDefault();
+
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+
+      message.style.display = "none";
+
+      loginButton.disabled = true;
+
+      loginButton.textContent = "Logging in...";
+
+
+      const { data, error } =
+        await db.auth.signInWithPassword({
+          email: email,
+          password: password
+        });
+
+
+      if (error) {
+
+        message.style.display = "block";
+
+        message.textContent =
+          "Login failed: " + error.message;
+
+        loginButton.disabled = false;
+
+        loginButton.textContent = "Login";
+
+        return;
+      }
+
+
+      // Login successful
+
+      window.location.href =
+        "dashboard.html";
+
+    }
+  );
+
+
+  // ==========================================
+  // CHECK EXISTING LOGIN
+  // ==========================================
+
+  async function checkExistingLogin() {
+
+    const { data } =
+      await db.auth.getSession();
+
+
+    if (data.session) {
+
+      window.location.href =
+        "dashboard.html";
+
+    }
+
+  }
+
+
+  checkExistingLogin();
+
+</script>
+
+</body>
+</html>
