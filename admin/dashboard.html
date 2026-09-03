@@ -440,6 +440,68 @@
       </div>
 
 
+      <!-- ================================= -->
+      <!-- INITIAL STATUS -->
+      <!-- ================================= -->
+
+      <div class="form-group">
+
+        <label>
+          Initial Status
+        </label>
+
+
+        <select id="initialStatus">
+
+          <option value="Preparing POW" selected>
+            Preparing POW
+          </option>
+
+          <option value="Waiting for Approval of POW">
+            Waiting for Approval of POW
+          </option>
+
+          <option value="Currently on Pre-Canvass">
+            Currently on Pre-Canvass
+          </option>
+
+          <option value="Approved Purchase Request">
+            Approved Purchase Request
+          </option>
+
+          <option value="Submitted to BAC for Deliberation">
+            Submitted to BAC for Deliberation
+          </option>
+
+          <option value="Posted on PHILGEPS (Waiting for Supplier's quotation)">
+            Posted on PHILGEPS (Waiting for Supplier's quotation)
+          </option>
+
+          <option value="BAC Deliberation">
+            BAC Deliberation
+          </option>
+
+          <option value="Waiting for the Delivery by the Supplier">
+            Waiting for the Delivery by the Supplier
+          </option>
+
+          <option value="Undergoing Inspection and Acceptance">
+            Undergoing Inspection and Acceptance
+          </option>
+
+          <option value="Failed Procurement">
+            Failed Procurement
+          </option>
+
+          <option value="Completed">
+            Completed
+          </option>
+
+        </select>
+
+      </div>
+
+
       <div class="form-buttons">
 
         <button
@@ -973,6 +1035,14 @@ async function createProcurement() {
     ).value;
 
 
+  // GET SELECTED INITIAL STATUS
+
+  const initialStatus =
+    document.getElementById(
+      "initialStatus"
+    ).value;
+
+
   if (!pr) {
 
     showMessage(
@@ -1094,7 +1164,7 @@ async function createProcurement() {
           null,
 
         current_status:
-          "Preparing POW"
+          initialStatus
 
       })
 
@@ -1115,7 +1185,8 @@ async function createProcurement() {
   }
 
 
-  // Create first history record.
+  // CREATE FIRST HISTORY RECORD
+  // USING THE SELECTED INITIAL STATUS
 
   const {
     error: historyError
@@ -1132,7 +1203,7 @@ async function createProcurement() {
           data.id,
 
         status:
-          "Preparing POW",
+          initialStatus,
 
         remarks:
           "Procurement request created.",
@@ -1187,6 +1258,14 @@ async function createProcurement() {
   document.getElementById(
     "estimatedCost"
   ).value = "";
+
+
+  // RESET INITIAL STATUS TO DEFAULT
+
+  document.getElementById(
+    "initialStatus"
+  ).value =
+    "Preparing POW";
 
 
   hideNewRequest();
@@ -1249,15 +1328,19 @@ function openUpdateBox(
         "option"
       );
 
+
     oldOption.value =
       currentStatus;
+
 
     oldOption.textContent =
       currentStatus +
       " (Old Status)";
 
+
     oldOption.selected =
       true;
+
 
     statusSelect.insertBefore(
       oldOption,
